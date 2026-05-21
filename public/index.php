@@ -37,6 +37,35 @@ if ($requestPath === '/_preflight') {
     exit;
 }
 
+if ($requestPath === '/_bootstrap-check') {
+    header('Content-Type: application/json');
+
+    try {
+        require __DIR__.'/../vendor/autoload.php';
+
+        $app = require __DIR__.'/../bootstrap/app.php';
+
+        echo json_encode([
+            'ok' => true,
+            'autoload' => true,
+            'bootstrap' => true,
+            'app_key_set' => !empty($_ENV['APP_KEY'] ?? getenv('APP_KEY')),
+            'base_path' => method_exists($app, 'basePath') ? $app->basePath() : null,
+        ]);
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode([
+            'ok' => false,
+            'error_class' => get_class($e),
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
+    }
+
+    exit;
+}
+
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
