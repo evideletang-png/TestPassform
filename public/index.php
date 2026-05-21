@@ -18,6 +18,25 @@ if ($requestPath === '/_ping') {
     exit;
 }
 
+if ($requestPath === '/_preflight') {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'ok' => true,
+        'php' => PHP_VERSION,
+        'app_key_set' => !empty($_ENV['APP_KEY'] ?? getenv('APP_KEY')),
+        'app_url' => $_ENV['APP_URL'] ?? getenv('APP_URL') ?: null,
+        'log_channel' => $_ENV['LOG_CHANNEL'] ?? getenv('LOG_CHANNEL') ?: null,
+        'cache_store' => $_ENV['CACHE_STORE'] ?? getenv('CACHE_STORE') ?: null,
+        'session_driver' => $_ENV['SESSION_DRIVER'] ?? getenv('SESSION_DRIVER') ?: null,
+        'db_connection' => $_ENV['DB_CONNECTION'] ?? getenv('DB_CONNECTION') ?: null,
+        'db_host_set' => !empty($_ENV['DB_HOST'] ?? getenv('DB_HOST')),
+        'db_database_set' => !empty($_ENV['DB_DATABASE'] ?? getenv('DB_DATABASE')),
+        'db_username_set' => !empty($_ENV['DB_USERNAME'] ?? getenv('DB_USERNAME')),
+        'db_password_set' => !empty($_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD')),
+    ]);
+    exit;
+}
+
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }

@@ -13,6 +13,8 @@ Route::get('/healthz', function () {
     ]);
 });
 
+Route::get('/health', fn () => redirect('/healthz'));
+
 // ── Portail Participant (accès public via token UUID) ─────────────────────────
 Route::prefix('s/{token}')->name('participant.')->group(function () {
     // Affiche la page d'émargement (routage automatique demi-journée en cours)
