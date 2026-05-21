@@ -1,7 +1,8 @@
 [build]
 builder = "RAILPACK"
+buildCommand = "php artisan filament:assets"
 
 [deploy]
-preDeployCommand = "php artisan filament:assets && php artisan migrate --force --seed"
+preDeployCommand = "php artisan migrate --force --seed"
 healthcheckPath = "/up"
 healthcheckTimeout = 300

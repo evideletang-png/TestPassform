@@ -6,6 +6,7 @@ use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Parametres;
 use App\Filament\Resources\SessionFormationResource;
 use App\Filament\Resources\UserResource;
+use App\Filament\Widgets\CommandCenter;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\SessionsTable;
 use Filament\Http\Middleware\Authenticate;
@@ -45,6 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                CommandCenter::class,
                 StatsOverview::class,
                 SessionsTable::class,
             ])
@@ -310,6 +312,218 @@ class AdminPanelProvider extends PanelProvider
                         color: var(--pf-blue) !important;
                     }
 
+                    .fi-layout {
+                        min-height: 100vh;
+                        background:
+                            linear-gradient(135deg, rgba(214, 162, 58, .10), transparent 28rem),
+                            linear-gradient(225deg, rgba(20, 63, 115, .10), transparent 30rem),
+                            #f5f7fb;
+                    }
+
+                    .fi-main-ctn {
+                        background: transparent;
+                    }
+
+                    .fi-main {
+                        width: 100%;
+                        padding-block: clamp(1.25rem, 2vw, 2rem);
+                    }
+
+                    .fi-header-heading {
+                        color: var(--pf-ink) !important;
+                        font-size: clamp(1.6rem, 2vw, 2.15rem) !important;
+                        font-weight: 850 !important;
+                        letter-spacing: 0 !important;
+                    }
+
+                    .fi-sidebar-nav {
+                        padding-inline: .75rem !important;
+                    }
+
+                    .fi-sidebar-item-label {
+                        font-weight: 700 !important;
+                    }
+
+                    .fi-wi-stats-overview-stat,
+                    .fi-section,
+                    .fi-ta {
+                        overflow: hidden;
+                        border-color: rgba(15, 35, 63, .10) !important;
+                        background:
+                            linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(255, 255, 255, .88)) !important;
+                    }
+
+                    .fi-wi-stats-overview-stat::before {
+                        content: "";
+                        position: absolute;
+                        inset: 0 auto 0 0;
+                        width: .25rem;
+                        background: linear-gradient(180deg, var(--pf-gold), var(--pf-blue));
+                    }
+
+                    .fi-wi-stats-overview-stat {
+                        position: relative;
+                        padding-left: 1.25rem !important;
+                    }
+
+                    .fi-wi-stats-overview-stat-label,
+                    .fi-section-header-heading,
+                    .fi-ta-header-heading {
+                        color: var(--pf-ink) !important;
+                        font-weight: 800 !important;
+                        letter-spacing: 0 !important;
+                    }
+
+                    .fi-wi-stats-overview-stat-description {
+                        color: var(--pf-muted) !important;
+                    }
+
+                    .fi-ta-content {
+                        border-radius: 0 0 1rem 1rem;
+                    }
+
+                    .fi-ta-header,
+                    .fi-section-header {
+                        background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(248, 250, 252, .88));
+                    }
+
+                    .fi-ta-empty-state {
+                        padding-block: 3rem !important;
+                    }
+
+                    .pf-command {
+                        display: grid;
+                        grid-template-columns: minmax(0, 1.45fr) minmax(18rem, .75fr);
+                        gap: clamp(1rem, 2vw, 1.5rem);
+                        align-items: stretch;
+                        overflow: hidden;
+                        border: 1px solid rgba(255, 255, 255, .18);
+                        border-radius: 1.25rem;
+                        background:
+                            linear-gradient(135deg, rgba(16, 35, 63, .98), rgba(20, 63, 115, .94)),
+                            linear-gradient(90deg, rgba(214, 162, 58, .18), transparent);
+                        box-shadow: 0 24px 70px rgba(16, 35, 63, .16);
+                        color: #fff;
+                        padding: clamp(1.25rem, 3vw, 2rem);
+                    }
+
+                    .pf-command__copy {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        min-width: 0;
+                    }
+
+                    .pf-command__eyebrow {
+                        color: var(--pf-gold-soft);
+                        font-size: .78rem;
+                        font-weight: 800;
+                        letter-spacing: .08em;
+                        text-transform: uppercase;
+                    }
+
+                    .pf-command h2 {
+                        margin-top: .55rem;
+                        color: #fff;
+                        font-size: clamp(1.55rem, 3vw, 2.45rem);
+                        font-weight: 850;
+                        letter-spacing: 0;
+                        line-height: 1.05;
+                    }
+
+                    .pf-command p {
+                        max-width: 42rem;
+                        margin-top: .8rem;
+                        color: rgba(226, 232, 240, .72);
+                        font-size: .98rem;
+                        line-height: 1.7;
+                    }
+
+                    .pf-command__actions {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: .7rem;
+                        margin-top: 1.35rem;
+                    }
+
+                    .pf-command__button {
+                        display: inline-flex;
+                        min-height: 2.65rem;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid rgba(255, 255, 255, .16);
+                        border-radius: .8rem;
+                        background: rgba(255, 255, 255, .08);
+                        color: rgba(255, 255, 255, .86);
+                        font-size: .88rem;
+                        font-weight: 750;
+                        padding-inline: 1rem;
+                        text-decoration: none;
+                    }
+
+                    .pf-command__button--primary {
+                        border-color: rgba(214, 162, 58, .78);
+                        background: linear-gradient(135deg, var(--pf-gold), #edcb76);
+                        color: #10233f;
+                        box-shadow: 0 16px 30px rgba(214, 162, 58, .22);
+                    }
+
+                    .pf-command__panel {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: .85rem;
+                        align-content: center;
+                        border: 1px solid rgba(255, 255, 255, .12);
+                        border-radius: 1rem;
+                        background: rgba(255, 255, 255, .08);
+                        padding: 1rem;
+                    }
+
+                    .pf-command__panel > div:not(.pf-command__status) {
+                        border-radius: .85rem;
+                        background: rgba(255, 255, 255, .08);
+                        padding: 1rem;
+                    }
+
+                    .pf-command__metric {
+                        display: block;
+                        color: #fff;
+                        font-size: 2rem;
+                        font-weight: 850;
+                        line-height: 1;
+                    }
+
+                    .pf-command__label {
+                        display: block;
+                        margin-top: .35rem;
+                        color: rgba(226, 232, 240, .62);
+                        font-size: .78rem;
+                        font-weight: 800;
+                        letter-spacing: .06em;
+                        text-transform: uppercase;
+                    }
+
+                    .pf-command__status {
+                        grid-column: 1 / -1;
+                        display: flex;
+                        align-items: center;
+                        gap: .65rem;
+                        border-radius: .85rem;
+                        background: rgba(13, 27, 47, .28);
+                        color: rgba(255, 255, 255, .78);
+                        font-size: .9rem;
+                        font-weight: 700;
+                        padding: .95rem 1rem;
+                    }
+
+                    .pf-command__status span {
+                        width: .6rem;
+                        height: .6rem;
+                        border-radius: 999px;
+                        background: #51d88a;
+                        box-shadow: 0 0 0 .35rem rgba(81, 216, 138, .16);
+                    }
+
                     .fi-sidebar-item-icon,
                     .fi-btn-icon,
                     .fi-ta-icon,
@@ -345,6 +559,10 @@ class AdminPanelProvider extends PanelProvider
 
                         .fi-wi-stats-overview-stat-value {
                             font-size: 1.65rem !important;
+                        }
+
+                        .pf-command {
+                            grid-template-columns: 1fr;
                         }
                     }
                 </style>
