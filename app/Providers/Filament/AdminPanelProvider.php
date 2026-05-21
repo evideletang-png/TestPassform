@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Parametres;
 use App\Filament\Resources\SessionFormationResource;
 use App\Filament\Resources\UserResource;
@@ -31,13 +32,13 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(Login::class)
             ->colors([
                 'primary' => Color::Blue,
                 'gray'    => Color::Slate,
             ])
             ->brandName('BR Code')
-            ->brandLogo(asset('images/brcode-logo.svg'))
+            ->brandLogo(asset('images/brcode-logo.jpg'))
             ->brandLogoHeight('3.25rem')
             ->favicon(null)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -74,20 +75,17 @@ class AdminPanelProvider extends PanelProvider
                         place-items: center;
                         padding: 2rem 1rem;
                         background:
-                            linear-gradient(135deg, rgba(13, 40, 72, .96), rgba(20, 63, 115, .88)),
-                            linear-gradient(90deg, rgba(214, 162, 58, .26), transparent 34%, rgba(255, 255, 255, .16));
+                            linear-gradient(135deg, rgba(8, 17, 38, .98), rgba(21, 34, 62, .96)),
+                            linear-gradient(90deg, rgba(214, 162, 58, .14), transparent 34%, rgba(20, 63, 115, .28));
                     }
 
                     .fi-simple-layout::before {
-                        content: "Émargement digital";
+                        content: "";
                         position: fixed;
-                        left: clamp(1.25rem, 5vw, 5rem);
-                        bottom: clamp(1.25rem, 5vw, 4rem);
-                        color: rgba(255, 255, 255, .13);
-                        font-size: clamp(2rem, 7vw, 7rem);
-                        font-weight: 800;
-                        letter-spacing: 0;
-                        line-height: .9;
+                        inset: 0;
+                        background:
+                            linear-gradient(120deg, rgba(255, 255, 255, .045), transparent 24%),
+                            linear-gradient(300deg, rgba(214, 162, 58, .10), transparent 34%);
                         pointer-events: none;
                     }
 
@@ -99,23 +97,35 @@ class AdminPanelProvider extends PanelProvider
                     }
 
                     .fi-simple-main {
-                        width: min(100%, 30rem) !important;
+                        width: min(100%, 32rem) !important;
                         margin-inline: auto !important;
+                        border: 1px solid rgba(255, 255, 255, .08);
+                        border-radius: 1.5rem;
+                        background: rgba(31, 43, 70, .82);
+                        box-shadow: 0 30px 90px rgba(0, 0, 0, .38);
+                        backdrop-filter: blur(20px);
+                        padding: 3rem;
                     }
 
                     .fi-simple-main .fi-simple-header {
-                        margin-bottom: 1.25rem;
-                        text-align: center;
+                        align-items: flex-start !important;
+                        margin-bottom: 2rem;
+                        text-align: left;
                     }
 
                     .fi-simple-main .fi-simple-header-heading {
-                        font-size: 1.75rem !important;
+                        color: #ffffff !important;
+                        font-size: 1.65rem !important;
+                        font-weight: 800 !important;
                         line-height: 1.15 !important;
                         letter-spacing: 0 !important;
                     }
 
                     .fi-simple-main .fi-simple-header-subheading {
-                        color: rgba(255, 255, 255, .84) !important;
+                        max-width: 24rem;
+                        color: rgba(226, 232, 240, .58) !important;
+                        font-size: .96rem !important;
+                        line-height: 1.55 !important;
                     }
 
                     .fi-simple-main .fi-logo {
@@ -132,10 +142,10 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-simple-main .fi-logo img {
                         width: auto !important;
-                        height: 7rem !important;
-                        max-width: 17rem !important;
+                        height: 4.25rem !important;
+                        max-width: 13rem !important;
                         object-fit: contain !important;
-                        filter: drop-shadow(0 18px 34px rgba(0, 0, 0, .22));
+                        filter: drop-shadow(0 18px 34px rgba(0, 0, 0, .26));
                     }
 
                     .fi-sidebar-header .fi-logo img {
@@ -148,15 +158,83 @@ class AdminPanelProvider extends PanelProvider
                     .fi-simple-main .fi-section,
                     .fi-simple-main .fi-card,
                     .fi-simple-main form {
-                        border: 1px solid rgba(255, 255, 255, .72);
-                        border-radius: 1.5rem;
-                        background: rgba(255, 255, 255, .96);
-                        box-shadow: 0 24px 70px rgba(15, 23, 42, .26);
-                        backdrop-filter: blur(18px);
+                        border: 0 !important;
+                        border-radius: 0 !important;
+                        background: transparent !important;
+                        box-shadow: none !important;
+                        backdrop-filter: none;
                     }
 
                     .fi-simple-main form {
-                        padding: 1.25rem !important;
+                        padding: 0 !important;
+                    }
+
+                    .fi-simple-main .fi-fo-field-wrp-label,
+                    .fi-simple-main .fi-fo-field-wrp-label span {
+                        color: rgba(226, 232, 240, .62) !important;
+                        font-size: .75rem !important;
+                        font-weight: 800 !important;
+                        letter-spacing: .08em !important;
+                        text-transform: uppercase !important;
+                    }
+
+                    .fi-simple-main .fi-input-wrp {
+                        border: 1px solid rgba(226, 232, 240, .12) !important;
+                        border-radius: .75rem !important;
+                        background: rgba(255, 255, 255, .07) !important;
+                        box-shadow: none !important;
+                        transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+                    }
+
+                    .fi-simple-main .fi-input-wrp:focus-within {
+                        border-color: rgba(214, 162, 58, .62) !important;
+                        background: rgba(255, 255, 255, .10) !important;
+                        box-shadow: 0 0 0 4px rgba(214, 162, 58, .13) !important;
+                    }
+
+                    .fi-simple-main .fi-input,
+                    .fi-simple-main input {
+                        min-height: 3.25rem !important;
+                        color: #f8fafc !important;
+                        font-size: .98rem !important;
+                    }
+
+                    .fi-simple-main .fi-input::placeholder,
+                    .fi-simple-main input::placeholder {
+                        color: rgba(226, 232, 240, .42) !important;
+                    }
+
+                    .fi-simple-main .fi-checkbox-input {
+                        border-color: rgba(226, 232, 240, .28) !important;
+                        background: rgba(255, 255, 255, .07) !important;
+                    }
+
+                    .fi-simple-main .fi-checkbox-input:checked {
+                        background-color: var(--pf-gold) !important;
+                    }
+
+                    .fi-simple-main .fi-checkbox-list-option-label,
+                    .fi-simple-main .fi-fo-field-wrp-helper-text,
+                    .fi-simple-main label {
+                        color: rgba(226, 232, 240, .64) !important;
+                    }
+
+                    .fi-simple-main .fi-btn {
+                        min-height: 3.35rem !important;
+                        justify-content: center !important;
+                        border-radius: .75rem !important;
+                        background: linear-gradient(135deg, var(--pf-gold), #e8c56d) !important;
+                        color: #0d1b2f !important;
+                        font-weight: 800 !important;
+                        box-shadow: 0 18px 32px rgba(214, 162, 58, .18) !important;
+                    }
+
+                    .fi-simple-main .fi-btn:hover {
+                        filter: brightness(1.05);
+                    }
+
+                    .fi-simple-main .fi-ac {
+                        margin-top: 1.5rem !important;
                     }
 
                     .fi-sidebar {
