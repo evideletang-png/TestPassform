@@ -14,7 +14,7 @@ use Filament\Notifications\Notification;
 class DemiJourneesRelationManager extends RelationManager
 {
     protected static string $relationship = 'demiJournees';
-    protected static ?string $title = 'Demi-journées';
+    protected static ?string $title = 'Créneaux et ouverture';
 
     public function form(Form $form): Form
     {
@@ -50,6 +50,20 @@ class DemiJourneesRelationManager extends RelationManager
                     ->label('N°')
                     ->width('40px'),
 
+                Tables\Columns\BadgeColumn::make('statut_emargement')
+                    ->label('Émargement')
+                    ->colors([
+                        'gray'    => 'ferme',
+                        'success' => 'ouvert',
+                        'danger'  => 'cloture',
+                    ])
+                    ->formatStateUsing(fn ($s) => match ($s) {
+                        'ferme'   => 'Fermé',
+                        'ouvert'  => 'Ouvert',
+                        'cloture' => 'Clôturé',
+                        default   => $s,
+                    }),
+
                 Tables\Columns\TextColumn::make('date')
                     ->label('Date')
                     ->date('d/m/Y')
@@ -68,25 +82,12 @@ class DemiJourneesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('taux_signature')
                     ->label('Signatures')
                     ->getStateUsing(fn (DemiJournee $dj) => $dj->taux_signature . ' %')
+                    ->badge()
+                    ->color(fn (DemiJournee $dj) => $dj->taux_signature >= 90 ? 'success' : ($dj->taux_signature >= 60 ? 'warning' : 'danger'))
                     ->alignCenter(),
 
-                // Statut de l'émargement avec icône
-                Tables\Columns\BadgeColumn::make('statut_emargement')
-                    ->label('Émargement')
-                    ->colors([
-                        'gray'    => 'ferme',
-                        'success' => 'ouvert',
-                        'danger'  => 'cloture',
-                    ])
-                    ->formatStateUsing(fn ($s) => match ($s) {
-                        'ferme'   => 'Fermé',
-                        'ouvert'  => 'Ouvert',
-                        'cloture' => 'Clôturé',
-                        default   => $s,
-                    }),
-
                 Tables\Columns\IconColumn::make('signature_formateur')
-                    ->label('Formateur')
+                    ->label('Signé formateur')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-clock')
@@ -144,6 +145,8 @@ class DemiJourneesRelationManager extends RelationManager
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn () => auth()->user()->isAdmin()),
-            ]);
+            ])
+            ->emptyStateHeading('Aucun créneau')
+            ->emptyStateDescription('Ajoutez les demi-journées à émarger pour cette session.');
     }
 }

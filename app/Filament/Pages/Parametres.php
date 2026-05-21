@@ -12,6 +12,7 @@ use Filament\Notifications\Notification;
 class Parametres extends Page
 {
     protected static ?string $navigationIcon  = 'heroicon-o-cog-6-tooth';
+    protected static ?string $navigationGroup = 'Administration';
     protected static ?string $navigationLabel = 'Paramètres';
     protected static ?string $title           = 'Paramètres de l\'application';
     protected static ?int    $navigationSort  = 10;

@@ -20,8 +20,9 @@ class StatsOverview extends BaseWidget
             ? SessionFormation::query()
             : SessionFormation::where('user_id', $user->id);
 
-        $sessionsActives  = (clone $sessionsQuery)->whereIn('statut', ['planifiee', 'en_cours'])->count();
-        $sessionsTerminees = (clone $sessionsQuery)->where('statut', 'terminee')->count();
+        $sessionsPlanifiees = (clone $sessionsQuery)->where('statut', 'planifiee')->count();
+        $sessionsEnCours = (clone $sessionsQuery)->where('statut', 'en_cours')->count();
+        $sessionsActives = $sessionsPlanifiees + $sessionsEnCours;
 
         // Participants sur les sessions accessibles
         $sessionIds   = (clone $sessionsQuery)->pluck('id');
@@ -54,17 +55,17 @@ class StatsOverview extends BaseWidget
 
         $stats = [
             Stat::make('Sessions actives', $sessionsActives)
-                ->description("dont {$sessionsTerminees} terminée(s)")
-                ->descriptionIcon('heroicon-m-academic-cap')
+                ->description("{$sessionsEnCours} en cours · {$sessionsPlanifiees} planifiée(s)")
+                ->descriptionIcon('heroicon-m-clipboard-document-check')
                 ->color('primary'),
 
             Stat::make('Participants inscrits', $nbParticipants)
-                ->description('Toutes sessions confondues')
+                ->description('Sur les sessions accessibles')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('success'),
 
-            Stat::make('Taux d\'émargement', $tauxGlobal . ' %')
-                ->description('Signatures / total attendu')
+            Stat::make('Signatures attendues', $tauxGlobal . ' %')
+                ->description('Taux global de complétion')
                 ->descriptionIcon('heroicon-m-pencil')
                 ->color($tauxGlobal >= 90 ? 'success' : ($tauxGlobal >= 60 ? 'warning' : 'danger')),
         ];

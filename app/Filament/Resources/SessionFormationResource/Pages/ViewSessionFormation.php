@@ -15,7 +15,9 @@ class ViewSessionFormation extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()
+                ->label('Modifier')
+                ->icon('heroicon-o-pencil-square'),
 
             Actions\Action::make('toggle_lien')
                 ->label(fn () => $this->record->lien_actif ? 'Désactiver le lien' : 'Réactiver le lien')
@@ -56,13 +58,13 @@ class ViewSessionFormation extends ViewRecord
 
             Actions\ActionGroup::make([
                 Actions\Action::make('export_pdf')
-                    ->label('Export PDF (émargements)')
+                    ->label('Feuille PDF')
                     ->icon('heroicon-o-document-text')
                     ->url(fn () => route('exports.pdf', $this->record))
                     ->openUrlInNewTab(),
 
                 Actions\Action::make('export_excel')
-                    ->label('Export Excel (CDC)')
+                    ->label('Fichier CDC')
                     ->icon('heroicon-o-table-cells')
                     ->url(fn () => route('exports.excel', $this->record))
                     ->openUrlInNewTab()

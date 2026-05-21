@@ -12,7 +12,7 @@ class SessionsTable extends BaseWidget
 {
     protected static ?int $sort = 2;
     protected int | string | array $columnSpan = 'full';
-    protected static ?string $heading = 'Sessions en cours et planifiées';
+    protected static ?string $heading = 'À piloter maintenant';
     protected static ?string $pollingInterval = '30s';
 
     public function table(Table $table): Table
@@ -36,7 +36,7 @@ class SessionsTable extends BaseWidget
                     ->label('')
                     ->badge()
                     ->colors(['warning' => 'en_cours', 'gray' => 'planifiee'])
-                    ->formatStateUsing(fn ($s) => $s === 'en_cours' ? '● En cours' : '○ Planifiée')
+                    ->formatStateUsing(fn ($s) => $s === 'en_cours' ? 'En cours' : 'Planifiée')
                     ->width('110px'),
 
                 Tables\Columns\TextColumn::make('intitule')
@@ -61,8 +61,10 @@ class SessionsTable extends BaseWidget
 
                 // Barre de progression émargements
                 Tables\Columns\TextColumn::make('taux_completion')
-                    ->label('Complétion')
+                    ->label('Signatures')
                     ->getStateUsing(fn (SessionFormation $s) => $s->taux_completion . ' %')
+                    ->badge()
+                    ->color(fn (SessionFormation $s) => $s->taux_completion >= 90 ? 'success' : ($s->taux_completion >= 60 ? 'warning' : 'danger'))
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('participants_count')
@@ -72,8 +74,9 @@ class SessionsTable extends BaseWidget
             ])
             ->actions([
                 Tables\Actions\Action::make('detail')
-                    ->label('Détail')
-                    ->icon('heroicon-o-eye')
+                    ->label('Piloter')
+                    ->icon('heroicon-o-arrow-right')
+                    ->color('primary')
                     ->url(fn (SessionFormation $s) => \App\Filament\Resources\SessionFormationResource::getUrl('view', ['record' => $s])),
             ])
             ->emptyStateHeading('Aucune session active')

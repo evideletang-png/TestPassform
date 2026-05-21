@@ -9,12 +9,14 @@ use Filament\Resources\Pages\ListRecords;
 class ListSessionFormations extends ListRecords
 {
     protected static string $resource = SessionFormationResource::class;
-    protected static ?string $title = 'Sessions de formation';
+    protected static ?string $title = 'Pilotage des émargements';
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->label('Nouvelle session'),
+            Actions\CreateAction::make()
+                ->label('Créer une session')
+                ->icon('heroicon-o-plus'),
         ];
     }
 }

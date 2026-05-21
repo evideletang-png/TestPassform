@@ -13,7 +13,7 @@ use Filament\Notifications\Notification;
 class ParticipantsRelationManager extends RelationManager
 {
     protected static string $relationship = 'participants';
-    protected static ?string $title = 'Participants';
+    protected static ?string $title = 'Participants et codes';
 
     public function form(Form $form): Form
     {
@@ -38,13 +38,11 @@ class ParticipantsRelationManager extends RelationManager
                     ->width('60px'),
 
                 Tables\Columns\TextColumn::make('prenom')
-                    ->label('Prénom')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('nom')
-                    ->label('Nom')
-                    ->searchable()
-                    ->weight('bold'),
+                    ->label('Participant')
+                    ->getStateUsing(fn (Participant $p) => $p->nom_complet)
+                    ->searchable(['prenom', 'nom'])
+                    ->weight('bold')
+                    ->description(fn (Participant $p) => $p->nom_naissance ? 'Naissance : ' . $p->nom_naissance : null),
 
                 Tables\Columns\TextColumn::make('nom_naissance')
                     ->label('Nom de naissance')
@@ -65,6 +63,14 @@ class ParticipantsRelationManager extends RelationManager
                         $signes = $p->emargements()->whereNotNull('signature')->count();
                         return "{$signes} / {$total}";
                     })
+                    ->badge()
+                    ->color(function (Participant $p) {
+                        $total = max(1, $this->getOwnerRecord()->demiJournees()->count());
+                        $signes = $p->emargements()->whereNotNull('signature')->count();
+                        $ratio = $signes / $total;
+
+                        return $ratio >= 1 ? 'success' : ($ratio > 0 ? 'warning' : 'danger');
+                    })
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('inscrit_at')
@@ -77,7 +83,7 @@ class ParticipantsRelationManager extends RelationManager
             ->filters([])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Ajouter manuellement')
+                    ->label('Ajouter un participant')
                     ->mutateFormDataUsing(function (array $data) {
                         $session = $this->getOwnerRecord();
                         $data['code_identification'] = $session->genererCodeUnique();
@@ -89,7 +95,7 @@ class ParticipantsRelationManager extends RelationManager
             ->actions([
                 // Révéler le code en clair (journalisé)
                 Tables\Actions\Action::make('voir_code')
-                    ->label('Code')
+                    ->label('Voir code')
                     ->icon('heroicon-o-key')
                     ->color('warning')
                     ->modalHeading('Code d\'identification')
@@ -107,7 +113,7 @@ class ParticipantsRelationManager extends RelationManager
 
                 // Voir le détail des émargements du participant
                 Tables\Actions\Action::make('emargements')
-                    ->label('Émargements')
+                    ->label('Suivi')
                     ->icon('heroicon-o-clipboard-document-check')
                     ->modalHeading(fn (Participant $p) => 'Émargements de ' . $p->nom_complet)
                     ->modalContent(function (Participant $p) {
@@ -133,6 +139,8 @@ class ParticipantsRelationManager extends RelationManager
 
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn () => auth()->user()->isAdmin()),
-            ]);
+            ])
+            ->emptyStateHeading('Aucun participant')
+            ->emptyStateDescription('Les participants apparaîtront ici après inscription via le lien public.');
     }
 }

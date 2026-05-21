@@ -33,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Emerald,
                 'gray'    => Color::Slate,
             ])
             ->brandName('PassForm')

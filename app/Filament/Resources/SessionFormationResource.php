@@ -14,13 +14,13 @@ use Filament\Tables\Table;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\HtmlString;
 
 class SessionFormationResource extends Resource
 {
     protected static ?string $model = SessionFormation::class;
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ?string $navigationLabel = 'Sessions';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
+    protected static ?string $navigationGroup = 'Émargement';
+    protected static ?string $navigationLabel = 'Pilotage sessions';
     protected static ?string $modelLabel = 'Session de formation';
     protected static ?string $pluralModelLabel = 'Sessions de formation';
     protected static ?int $navigationSort = 1;
@@ -43,10 +43,13 @@ class SessionFormationResource extends Resource
     {
         return $form->schema([
 
-            Forms\Components\Section::make('Informations générales')
+            Forms\Components\Section::make('Session')
+                ->description('Les informations visibles par l’équipe de formation et utilisées dans les exports.')
+                ->icon('heroicon-o-academic-cap')
                 ->schema([
                     Forms\Components\TextInput::make('intitule')
-                        ->label('Intitulé de la formation')
+                        ->label('Formation')
+                        ->placeholder('Ex. Passeport de prévention - session initiale')
                         ->required()
                         ->maxLength(255)
                         ->columnSpanFull(),
@@ -58,6 +61,7 @@ class SessionFormationResource extends Resource
 
                     Forms\Components\TextInput::make('lieu')
                         ->label('Lieu de formation')
+                        ->placeholder('Salle, site, ville')
                         ->maxLength(255),
 
                     Forms\Components\Select::make('user_id')
@@ -67,14 +71,16 @@ class SessionFormationResource extends Resource
                         ->required()
                         ->default(fn () => auth()->id())
                         ->disabled(fn () => auth()->user()->isFormateur()),
-                ])->columns(2),
+                ])
+                ->columns(2),
 
             Forms\Components\Section::make('Demi-journées')
-                ->description('Définissez chaque demi-journée de la session. L\'ordre est automatique.')
+                ->description('Créez le planning d’émargement. Le formateur ouvrira chaque demi-journée le moment venu.')
+                ->icon('heroicon-o-calendar-days')
                 ->schema([
                     Forms\Components\Repeater::make('demiJournees')
                         ->relationship()
-                        ->label('')
+                        ->label('Planning')
                         ->schema([
                             Forms\Components\DatePicker::make('date')
                                 ->label('Date')
@@ -112,9 +118,12 @@ class SessionFormationResource extends Resource
                         ])
                         ->columns(4)
                         ->defaultItems(1)
-                        ->addActionLabel('Ajouter une demi-journée')
+                        ->addActionLabel('Ajouter un créneau')
                         ->reorderable()
                         ->reorderableWithButtons()
+                        ->itemLabel(fn (array $state): ?string => filled($state['date'] ?? null)
+                            ? ($state['date'] . ' · ' . (($state['creneau'] ?? 'matin') === 'matin' ? 'Matin' : 'Après-midi'))
+                            : 'Créneau à planifier')
                         ->mutateRelationshipDataBeforeCreateUsing(function (array $data, $livewire): array {
                             // L'ordre est calculé après le repeater
                             return $data;
@@ -123,9 +132,11 @@ class SessionFormationResource extends Resource
                 ]),
 
             Forms\Components\Section::make('Paramètres RGPD')
+                ->description('À ajuster seulement si la politique de conservation de la session diffère du réglage global.')
+                ->icon('heroicon-o-shield-check')
                 ->schema([
                     Forms\Components\TextInput::make('purge_delai_jours')
-                        ->label('Délai de purge NIR (jours après déclaration CDC)')
+                        ->label('Délai de purge NIR')
                         ->numeric()
                         ->default(30)
                         ->minValue(1)
@@ -142,35 +153,8 @@ class SessionFormationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('intitule')
-                    ->label('Formation')
-                    ->searchable()
-                    ->sortable()
-                    ->weight('bold')
-                    ->description(fn (SessionFormation $s) => $s->lieu),
-
-                Tables\Columns\TextColumn::make('formateur.name')
-                    ->label('Formateur')
-                    ->sortable()
-                    ->hidden(fn () => auth()->user()->isFormateur()),
-
-                Tables\Columns\TextColumn::make('demiJournees_count')
-                    ->label('Demi-journées')
-                    ->counts('demiJournees')
-                    ->alignCenter(),
-
-                Tables\Columns\TextColumn::make('participants_count')
-                    ->label('Participants')
-                    ->counts('participants')
-                    ->alignCenter(),
-
-                // Taux de complétion avec barre de progression
-                Tables\Columns\TextColumn::make('taux_completion')
-                    ->label('Complétion')
-                    ->getStateUsing(fn (SessionFormation $s) => $s->taux_completion . ' %')
-                    ->alignCenter(),
-
                 Tables\Columns\BadgeColumn::make('statut')
                     ->label('Statut')
                     ->colors([
@@ -185,6 +169,53 @@ class SessionFormationResource extends Resource
                         default     => $state,
                     }),
 
+                Tables\Columns\TextColumn::make('intitule')
+                    ->label('Formation')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->description(fn (SessionFormation $s) => collect([
+                        $s->lieu,
+                        $s->formateur?->name ? 'Formateur : ' . $s->formateur->name : null,
+                    ])->filter()->join(' · '))
+                    ->wrap(),
+
+                Tables\Columns\TextColumn::make('prochain_creneau')
+                    ->label('Prochain créneau')
+                    ->getStateUsing(function (SessionFormation $s) {
+                        $dj = $s->demiJournees
+                            ->where('statut_emargement', '!=', 'cloture')
+                            ->sortBy(fn ($dj) => $dj->date->format('Ymd') . str_pad((string) $dj->ordre, 3, '0', STR_PAD_LEFT))
+                            ->first();
+
+                        if (!$dj) {
+                            return 'Aucun créneau ouvert';
+                        }
+
+                        return $dj->date->format('d/m/Y') . ' · '
+                            . ($dj->creneau === 'matin' ? 'Matin' : 'Après-midi')
+                            . ' · ' . $dj->heure_debut . '-' . $dj->heure_fin;
+                    })
+                    ->icon('heroicon-o-calendar')
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('demiJournees_count')
+                    ->label('Créneaux')
+                    ->counts('demiJournees')
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('participants_count')
+                    ->label('Participants')
+                    ->counts('participants')
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('taux_completion')
+                    ->label('Signatures')
+                    ->getStateUsing(fn (SessionFormation $s) => $s->taux_completion . ' %')
+                    ->badge()
+                    ->color(fn (SessionFormation $s) => $s->taux_completion >= 90 ? 'success' : ($s->taux_completion >= 60 ? 'warning' : 'danger'))
+                    ->alignCenter(),
+
                 Tables\Columns\IconColumn::make('lien_actif')
                     ->label('Lien')
                     ->boolean()
@@ -195,6 +226,7 @@ class SessionFormationResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('statut')
+                    ->label('Statut')
                     ->options([
                         'planifiee' => 'Planifiée',
                         'en_cours'  => 'En cours',
@@ -207,16 +239,25 @@ class SessionFormationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('voir')
-                    ->label('Détail')
+                    ->label('Piloter')
                     ->icon('heroicon-o-eye')
+                    ->color('primary')
                     ->url(fn (SessionFormation $s) => static::getUrl('view', ['record' => $s])),
 
                 Tables\Actions\Action::make('copier_lien')
-                    ->label('Lien participant')
+                    ->label('Participant')
                     ->icon('heroicon-o-clipboard-document')
                     ->action(fn () => null) // Le JS copy est géré côté vue
                     ->extraAttributes(fn (SessionFormation $s) => [
                         'x-on:click' => "navigator.clipboard.writeText('{$s->url_participant}'); \$dispatch('notify', {message: 'Lien copié !'})",
+                    ]),
+
+                Tables\Actions\Action::make('copier_lien_formateur')
+                    ->label('Formateur')
+                    ->icon('heroicon-o-key')
+                    ->action(fn () => null)
+                    ->extraAttributes(fn (SessionFormation $s) => [
+                        'x-on:click' => "navigator.clipboard.writeText('{$s->url_formateur}'); \$dispatch('notify', {message: 'Lien formateur copié !'})",
                     ]),
 
                 Tables\Actions\EditAction::make(),
@@ -228,7 +269,7 @@ class SessionFormationResource extends Resource
                 ]),
             ])
             ->emptyStateHeading('Aucune session')
-            ->emptyStateDescription('Créez votre première session de formation.')
+            ->emptyStateDescription('Créez une session, planifiez ses créneaux, puis partagez le lien participant.')
             ->emptyStateActions([
                 Tables\Actions\Action::make('create')
                     ->label('Créer une session')
@@ -241,11 +282,9 @@ class SessionFormationResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Infolists\Components\Section::make('Informations')
+            Infolists\Components\Section::make('Vue d’ensemble')
+                ->icon('heroicon-o-presentation-chart-bar')
                 ->schema([
-                    Infolists\Components\TextEntry::make('intitule')->label('Formation')->weight('bold'),
-                    Infolists\Components\TextEntry::make('formateur.name')->label('Formateur'),
-                    Infolists\Components\TextEntry::make('lieu')->label('Lieu')->placeholder('Non renseigné'),
                     Infolists\Components\BadgeEntry::make('statut')
                         ->label('Statut')
                         ->colors([
@@ -253,27 +292,49 @@ class SessionFormationResource extends Resource
                             'warning' => 'en_cours',
                             'success' => 'terminee',
                         ]),
-                ])->columns(2),
+                    Infolists\Components\TextEntry::make('intitule')
+                        ->label('Formation')
+                        ->weight('bold'),
+                    Infolists\Components\TextEntry::make('formateur.name')
+                        ->label('Formateur'),
+                    Infolists\Components\TextEntry::make('lieu')
+                        ->label('Lieu')
+                        ->placeholder('Non renseigné'),
+                    Infolists\Components\TextEntry::make('participants_count')
+                        ->label('Participants')
+                        ->state(fn (SessionFormation $s) => $s->participants()->count()),
+                    Infolists\Components\TextEntry::make('demi_journees_count')
+                        ->label('Créneaux')
+                        ->state(fn (SessionFormation $s) => $s->demiJournees()->count()),
+                    Infolists\Components\TextEntry::make('taux_completion')
+                        ->label('Signatures')
+                        ->state(fn (SessionFormation $s) => $s->taux_completion . ' %')
+                        ->badge()
+                        ->color(fn (SessionFormation $s) => $s->taux_completion >= 90 ? 'success' : ($s->taux_completion >= 60 ? 'warning' : 'danger')),
+                ])
+                ->columns(3),
 
             Infolists\Components\Section::make('Liens de session')
+                ->icon('heroicon-o-link')
                 ->schema([
                     Infolists\Components\TextEntry::make('url_participant')
-                        ->label('Lien participant (QR code en salle)')
+                        ->label('Participants')
                         ->copyable()
                         ->copyMessage('Lien copié !')
                         ->fontFamily('mono'),
 
                     Infolists\Components\TextEntry::make('url_formateur')
-                        ->label('Lien formateur (privé)')
+                        ->label('Formateur')
                         ->copyable()
                         ->copyMessage('Lien copié !')
                         ->fontFamily('mono'),
 
                     Infolists\Components\TextEntry::make('lien_expire_at')
-                        ->label('Expiration du lien')
+                        ->label('Expiration')
                         ->dateTime('d/m/Y à H\hi')
                         ->placeholder('Calculée à la fin de session'),
-                ])->columns(1),
+                ])
+                ->columns(1),
         ]);
     }
 
