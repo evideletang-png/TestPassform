@@ -5,6 +5,14 @@ use App\Http\Controllers\FormateurPublicController;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/healthz', function () {
+    return response()->json([
+        'ok' => true,
+        'app' => config('app.name'),
+        'env' => app()->environment(),
+    ]);
+});
+
 // ── Portail Participant (accès public via token UUID) ─────────────────────────
 Route::prefix('s/{token}')->name('participant.')->group(function () {
     // Affiche la page d'émargement (routage automatique demi-journée en cours)
