@@ -18,36 +18,52 @@ Route::get('/healthz', function () {
 Route::get('/health', fn () => redirect('/healthz'));
 
 Route::get('/_db-check', function () {
-    $tables = [
-        'users',
-        'sessions',
-        'cache',
-        'parametres',
-        'sessions_formation',
-        'demi_journees',
-        'participants',
-        'emargements',
-        'audit_logs',
-        'code_attempts',
-    ];
+    try {
+        $tables = [
+            'users',
+            'sessions',
+            'cache',
+            'parametres',
+            'sessions_formation',
+            'demi_journees',
+            'participants',
+            'emargements',
+            'audit_logs',
+            'code_attempts',
+        ];
 
-    $tableStatus = [];
+        DB::connection()->getPdo();
 
-    foreach ($tables as $table) {
-        $tableStatus[$table] = Schema::hasTable($table);
+        $tableStatus = [];
+
+        foreach ($tables as $table) {
+            $tableStatus[$table] = Schema::hasTable($table);
+        }
+
+        return response()->json([
+            'ok' => true,
+            'connection' => config('database.default'),
+            'host_set' => filled(config('database.connections.mysql.host')),
+            'database_set' => filled(config('database.connections.mysql.database')),
+            'tables' => $tableStatus,
+            'users_count' => Schema::hasTable('users') ? DB::table('users')->count() : null,
+            'admin_exists' => Schema::hasTable('users')
+                ? DB::table('users')->where('email', 'admin@passform.local')->exists()
+                : false,
+        ]);
+    } catch (Throwable $e) {
+        return response()->json([
+            'ok' => false,
+            'connection' => config('database.default'),
+            'host' => config('database.connections.mysql.host'),
+            'port' => config('database.connections.mysql.port'),
+            'database_set' => filled(config('database.connections.mysql.database')),
+            'username_set' => filled(config('database.connections.mysql.username')),
+            'password_set' => filled(config('database.connections.mysql.password')),
+            'error_class' => get_class($e),
+            'message' => $e->getMessage(),
+        ], 500);
     }
-
-    return response()->json([
-        'ok' => true,
-        'connection' => config('database.default'),
-        'host_set' => filled(config('database.connections.mysql.host')),
-        'database_set' => filled(config('database.connections.mysql.database')),
-        'tables' => $tableStatus,
-        'users_count' => Schema::hasTable('users') ? DB::table('users')->count() : null,
-        'admin_exists' => Schema::hasTable('users')
-            ? DB::table('users')->where('email', 'admin@passform.local')->exists()
-            : false,
-    ]);
 });
 
 // ── Portail Participant (accès public via token UUID) ─────────────────────────
