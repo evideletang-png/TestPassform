@@ -53,7 +53,7 @@ return new class extends Migration
         // ─── Demi-journées ────────────────────────────────────────────────────
         Schema::create('demi_journees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('session_formation_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('session_formation_id')->constrained('sessions_formation')->cascadeOnDelete();
             $table->date('date');
             $table->enum('creneau', ['matin', 'apres_midi']);
             $table->time('heure_debut')->default('08:30');
@@ -77,7 +77,7 @@ return new class extends Migration
         // ─── Participants ─────────────────────────────────────────────────────
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('session_formation_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('session_formation_id')->constrained('sessions_formation')->cascadeOnDelete();
 
             $table->string('prenom');
             $table->string('nom');
@@ -138,7 +138,7 @@ return new class extends Migration
         // ─── Tentatives de connexion (rate limiting code participant) ─────────
         Schema::create('code_attempts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('session_formation_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('session_formation_id')->constrained('sessions_formation')->cascadeOnDelete();
             $table->string('ip', 45);
             $table->unsignedTinyInteger('tentatives')->default(0);
             $table->timestamp('bloque_jusqu_at')->nullable();
