@@ -5,58 +5,9 @@ namespace App\Filament\Resources\SessionFormationResource\Pages;
 use App\Filament\Resources\SessionFormationResource;
 use App\Models\AuditLog;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\ViewRecord;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
 
-// ── Liste ─────────────────────────────────────────────────────────────────────
-class ListSessionFormations extends ListRecords
-{
-    protected static string $resource = SessionFormationResource::class;
-    protected static ?string $title = 'Sessions de formation';
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make()->label('Nouvelle session'),
-        ];
-    }
-}
-
-// ── Création ─────────────────────────────────────────────────────────────────
-class CreateSessionFormation extends CreateRecord
-{
-    protected static string $resource = SessionFormationResource::class;
-    protected static ?string $title = 'Créer une session';
-
-    protected function afterCreate(): void
-    {
-        // Calcul de l'ordre sur chaque demi-journée après création
-        $session = $this->record;
-        $session->demiJournees()->orderBy('date')->orderBy('creneau')->each(function ($dj, $index) {
-            $dj->update(['ordre' => $index + 1]);
-        });
-
-        AuditLog::journaliser('session_creee', $session, auth()->id(), [
-            'intitule' => $session->intitule,
-        ]);
-
-        Notification::make()
-            ->title('Session créée')
-            ->body('Le lien participant a été généré automatiquement.')
-            ->success()
-            ->send();
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('view', ['record' => $this->record]);
-    }
-}
-
-// ── Vue détaillée ─────────────────────────────────────────────────────────────
 class ViewSessionFormation extends ViewRecord
 {
     protected static string $resource = SessionFormationResource::class;
@@ -66,7 +17,6 @@ class ViewSessionFormation extends ViewRecord
         return [
             Actions\EditAction::make(),
 
-            // Désactiver / réactiver le lien participant
             Actions\Action::make('toggle_lien')
                 ->label(fn () => $this->record->lien_actif ? 'Désactiver le lien' : 'Réactiver le lien')
                 ->icon(fn () => $this->record->lien_actif ? 'heroicon-o-no-symbol' : 'heroicon-o-link')
@@ -86,7 +36,6 @@ class ViewSessionFormation extends ViewRecord
                     $this->refreshFormData(['lien_actif']);
                 }),
 
-            // Déclarer à la CDC (déclenche la planification de la purge RGPD)
             Actions\Action::make('declarer_cdc')
                 ->label('Déclarer à la CDC')
                 ->icon('heroicon-o-building-library')
@@ -105,7 +54,6 @@ class ViewSessionFormation extends ViewRecord
                         ->send();
                 }),
 
-            // Exports
             Actions\ActionGroup::make([
                 Actions\Action::make('export_pdf')
                     ->label('Export PDF (émargements)')
@@ -121,24 +69,5 @@ class ViewSessionFormation extends ViewRecord
                     ->visible(fn () => auth()->user()->isAdmin()),
             ])->label('Exporter')->icon('heroicon-o-arrow-down-tray'),
         ];
-    }
-}
-
-// ── Édition ──────────────────────────────────────────────────────────────────
-class EditSessionFormation extends EditRecord
-{
-    protected static string $resource = SessionFormationResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make()->visible(fn () => auth()->user()->isAdmin()),
-        ];
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('view', ['record' => $this->record]);
     }
 }
