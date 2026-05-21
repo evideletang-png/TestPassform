@@ -89,27 +89,34 @@ class AdminPanelProvider extends PanelProvider
                         pointer-events: none;
                     }
 
-                    .fi-simple-main-ctn {
+                    .fi-simple-main-ctn,
+                    .fi-simple-page,
+                    .fi-simple-page > div {
                         min-height: 100vh !important;
                         display: grid !important;
                         place-items: center !important;
                         width: 100% !important;
+                        padding: 0 !important;
                     }
 
                     .fi-simple-main {
-                        width: min(100%, 32rem) !important;
+                        position: relative;
+                        z-index: 1;
+                        width: min(92vw, 31rem) !important;
+                        max-width: 31rem !important;
                         margin-inline: auto !important;
                         border: 1px solid rgba(255, 255, 255, .08);
-                        border-radius: 1.5rem;
+                        border-radius: 1.4rem;
                         background: rgba(31, 43, 70, .82);
                         box-shadow: 0 30px 90px rgba(0, 0, 0, .38);
                         backdrop-filter: blur(20px);
-                        padding: 3rem;
+                        padding: clamp(1.5rem, 4vw, 2.75rem);
                     }
 
                     .fi-simple-main .fi-simple-header {
                         align-items: flex-start !important;
-                        margin-bottom: 2rem;
+                        gap: 1.4rem !important;
+                        margin-bottom: 1.8rem;
                         text-align: left;
                     }
 
@@ -142,8 +149,9 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-simple-main .fi-logo img {
                         width: auto !important;
-                        height: 4.25rem !important;
-                        max-width: 13rem !important;
+                        height: auto !important;
+                        max-height: 4.2rem !important;
+                        max-width: 14rem !important;
                         object-fit: contain !important;
                         filter: drop-shadow(0 18px 34px rgba(0, 0, 0, .26));
                     }
@@ -169,6 +177,12 @@ class AdminPanelProvider extends PanelProvider
                         padding: 0 !important;
                     }
 
+                    .fi-simple-main .fi-form,
+                    .fi-simple-main form > div {
+                        display: grid !important;
+                        gap: 1.15rem !important;
+                    }
+
                     .fi-simple-main .fi-fo-field-wrp-label,
                     .fi-simple-main .fi-fo-field-wrp-label span {
                         color: rgba(226, 232, 240, .62) !important;
@@ -178,7 +192,18 @@ class AdminPanelProvider extends PanelProvider
                         text-transform: uppercase !important;
                     }
 
+                    .fi-simple-main .fi-fo-field-wrp {
+                        display: grid !important;
+                        gap: .45rem !important;
+                    }
+
+                    .fi-simple-main .fi-fo-field-wrp-error-message {
+                        color: #fecaca !important;
+                    }
+
                     .fi-simple-main .fi-input-wrp {
+                        overflow: hidden !important;
+                        width: 100% !important;
                         border: 1px solid rgba(226, 232, 240, .12) !important;
                         border-radius: .75rem !important;
                         background: rgba(255, 255, 255, .07) !important;
@@ -194,9 +219,13 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-simple-main .fi-input,
                     .fi-simple-main input {
+                        width: 100% !important;
                         min-height: 3.25rem !important;
+                        border: 0 !important;
+                        background: transparent !important;
                         color: #f8fafc !important;
                         font-size: .98rem !important;
+                        box-shadow: none !important;
                     }
 
                     .fi-simple-main .fi-input::placeholder,
@@ -219,7 +248,42 @@ class AdminPanelProvider extends PanelProvider
                         color: rgba(226, 232, 240, .64) !important;
                     }
 
+                    .fi-simple-main .fi-icon-btn,
+                    .fi-simple-main button[type="button"] {
+                        width: 2.5rem !important;
+                        height: 2.5rem !important;
+                        min-width: 2.5rem !important;
+                        min-height: 2.5rem !important;
+                        border-radius: .65rem !important;
+                        background: transparent !important;
+                    }
+
+                    .fi-simple-main .fi-icon-btn svg,
+                    .fi-simple-main button[type="button"] svg,
+                    .fi-input-wrp-suffix svg,
+                    .fi-input-wrp-prefix svg {
+                        width: 1.15rem !important;
+                        height: 1.15rem !important;
+                        min-width: 1.15rem !important;
+                        min-height: 1.15rem !important;
+                        max-width: 1.15rem !important;
+                        max-height: 1.15rem !important;
+                    }
+
+                    .fi-simple-main .fi-input-wrp-suffix,
+                    .fi-simple-main .fi-input-wrp-prefix {
+                        display: grid !important;
+                        place-items: center !important;
+                        width: 2.75rem !important;
+                        min-width: 2.75rem !important;
+                    }
+
+                    .fi-simple-main .fi-fo-component-ctn {
+                        gap: 1.15rem !important;
+                    }
+
                     .fi-simple-main .fi-btn {
+                        width: 100% !important;
                         min-height: 3.35rem !important;
                         justify-content: center !important;
                         border-radius: .75rem !important;
@@ -234,7 +298,17 @@ class AdminPanelProvider extends PanelProvider
                     }
 
                     .fi-simple-main .fi-ac {
-                        margin-top: 1.5rem !important;
+                        margin-top: .35rem !important;
+                        width: 100% !important;
+                    }
+
+                    .fi-simple-main .fi-ac .fi-btn {
+                        width: 100% !important;
+                    }
+
+                    .fi-simple-main p,
+                    .fi-simple-main a {
+                        color: rgba(226, 232, 240, .66) !important;
                     }
 
                     .fi-sidebar {
