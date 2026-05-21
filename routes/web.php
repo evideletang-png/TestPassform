@@ -3,7 +3,9 @@
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\FormateurPublicController;
 use App\Http\Controllers\ExportController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 Route::get('/healthz', function () {
     return response()->json([
@@ -14,6 +16,39 @@ Route::get('/healthz', function () {
 });
 
 Route::get('/health', fn () => redirect('/healthz'));
+
+Route::get('/_db-check', function () {
+    $tables = [
+        'users',
+        'sessions',
+        'cache',
+        'parametres',
+        'sessions_formation',
+        'demi_journees',
+        'participants',
+        'emargements',
+        'audit_logs',
+        'code_attempts',
+    ];
+
+    $tableStatus = [];
+
+    foreach ($tables as $table) {
+        $tableStatus[$table] = Schema::hasTable($table);
+    }
+
+    return response()->json([
+        'ok' => true,
+        'connection' => config('database.default'),
+        'host_set' => filled(config('database.connections.mysql.host')),
+        'database_set' => filled(config('database.connections.mysql.database')),
+        'tables' => $tableStatus,
+        'users_count' => Schema::hasTable('users') ? DB::table('users')->count() : null,
+        'admin_exists' => Schema::hasTable('users')
+            ? DB::table('users')->where('email', 'admin@passform.local')->exists()
+            : false,
+    ]);
+});
 
 // ── Portail Participant (accès public via token UUID) ─────────────────────────
 Route::prefix('s/{token}')->name('participant.')->group(function () {
