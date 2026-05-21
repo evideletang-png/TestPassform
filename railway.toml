@@ -1,0 +1,7 @@
+[build]
+builder = "RAILPACK"
+
+[deploy]
+preDeployCommand = "php artisan migrate --force --seed"
+healthcheckPath = "/up"
+healthcheckTimeout = 300
