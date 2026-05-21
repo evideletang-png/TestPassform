@@ -66,6 +66,51 @@ if ($requestPath === '/_bootstrap-check') {
     exit;
 }
 
+if ($requestPath === '/_filament-check') {
+    header('Content-Type: application/json');
+
+    try {
+        require __DIR__.'/../vendor/autoload.php';
+
+        $checks = [
+            App\Providers\Filament\AdminPanelProvider::class,
+            App\Filament\Resources\SessionFormationResource::class,
+            App\Filament\Resources\SessionFormationResource\Pages\ListSessionFormations::class,
+            App\Filament\Resources\SessionFormationResource\Pages\CreateSessionFormation::class,
+            App\Filament\Resources\SessionFormationResource\Pages\ViewSessionFormation::class,
+            App\Filament\Resources\SessionFormationResource\Pages\EditSessionFormation::class,
+            App\Filament\Resources\UserResource::class,
+            App\Filament\Resources\UserResource\Pages\ListUsers::class,
+            App\Filament\Resources\UserResource\Pages\CreateUser::class,
+            App\Filament\Resources\UserResource\Pages\EditUser::class,
+            App\Filament\Pages\Parametres::class,
+            App\Filament\Widgets\StatsOverview::class,
+            App\Filament\Widgets\SessionsTable::class,
+        ];
+
+        $loaded = [];
+        foreach ($checks as $class) {
+            $loaded[$class] = class_exists($class);
+        }
+
+        echo json_encode([
+            'ok' => !in_array(false, $loaded, true),
+            'classes' => $loaded,
+        ]);
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode([
+            'ok' => false,
+            'error_class' => get_class($e),
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
+    }
+
+    exit;
+}
+
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }

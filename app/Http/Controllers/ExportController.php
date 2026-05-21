@@ -62,4 +62,9 @@ class ExportController extends Controller
 
         return Excel::download(new EmargementsCdcExport($session), $filename);
     }
+
+    public function cdc(Request $request, SessionFormation $session)
+    {
+        return $this->excel($request, $session);
+    }
 }
