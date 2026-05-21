@@ -97,20 +97,20 @@ class AdminPanelProvider extends PanelProvider
                     }
 
                     .fi-simple-main {
-                        width: min(100%, 32rem) !important;
+                        width: min(100%, 31rem) !important;
                         margin-inline: auto !important;
                         border: 1px solid rgba(255, 255, 255, .08);
                         border-radius: 1.5rem;
                         background: rgba(31, 43, 70, .82);
                         box-shadow: 0 30px 90px rgba(0, 0, 0, .38);
                         backdrop-filter: blur(20px);
-                        padding: 3rem;
+                        padding: clamp(1.75rem, 4vw, 3rem);
                     }
 
                     .fi-simple-main .fi-simple-header {
-                        align-items: flex-start !important;
+                        align-items: center !important;
                         margin-bottom: 2rem;
-                        text-align: left;
+                        text-align: center;
                     }
 
                     .fi-simple-main .fi-simple-header-heading {
@@ -123,6 +123,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-simple-main .fi-simple-header-subheading {
                         max-width: 24rem;
+                        margin-inline: auto;
                         color: rgba(226, 232, 240, .58) !important;
                         font-size: .96rem !important;
                         line-height: 1.55 !important;
@@ -167,6 +168,8 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-simple-main form {
                         padding: 0 !important;
+                        max-width: 25rem !important;
+                        margin-inline: auto !important;
                     }
 
                     .fi-simple-main .fi-fo-field-wrp-label,
