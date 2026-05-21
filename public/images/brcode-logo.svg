@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 260" role="img" aria-labelledby="title desc">
+  <title id="title">BR Code</title>
+  <desc id="desc">Logo BR Code bleu et doré</desc>
+  <defs>
+    <style>
+      .blue{fill:#073f5f}
+      .gold{fill:#d0a250}
+      .text-blue{fill:#073f5f}
+      .text-gold{fill:#d0a250}
+    </style>
+  </defs>
+  <g transform="translate(10 5)">
+    <path class="blue" d="M94.6 10.4c-38.4 4.8-70.3 32.7-80.9 70.1-10.2 36.1 1.5 75.9 30.4 100.3 23 19.4 56.7 28.2 88.3 20.4 36.7-9.1 65.8-38.4 73.9-75.5 1.1-5.2-2.7-10.2-8.1-10.2h-31.5c-4 0-7.4 2.7-8.4 6.5-5.4 20.2-20.8 35.7-41.5 41.1-19 5-39.8.1-54.8-12.7-16.6-14.2-23.5-37.2-17.5-58.1 6.5-22.8 25.7-40 49.7-43.3 4.1-.6 7.1-4.1 7.1-8.2V18.6c0-4.9-4.2-8.8-9.1-8.2z"/>
+    <path class="gold" d="M118.3 52.7c29.7 7.7 51.5 34.5 51.5 66.7 0 7.6-1.2 14.9-3.5 21.8-1 3.1.3 6.5 3.2 8.1l15.1 8.5c3.8 2.1 8.5.3 10-3.7 4.5-11.1 6.9-23.1 6.9-35.7 0-48.9-36.5-89.3-83.7-95.4-4.3-.6-8.2 2.8-8.2 7.1v14.8c0 3.7 2.7 6.9 6.3 7.8z"/>
+    <path class="gold" d="M105.5 70.9c-24.7 0-44.8 20.1-44.8 44.8 0 12.7 5.3 24.2 13.8 32.4 2.5 2.4 6.4 2.5 9 .3l10.8-9.7c3.1-2.8 2.8-7.8-.5-10.3-4-3.1-6.5-7.9-6.5-13.3 0-9.5 7.7-17.2 17.2-17.2 5.8 0 10.9 2.9 14 7.3 2.4 3.5 7.4 4 10.4 1l10.1-10.1c2.4-2.4 2.6-6.3.4-8.9-8.2-10-20.4-16.3-33.9-16.3z"/>
+    <path class="blue" d="M105.1 101.7c-8 0-14.4 6.5-14.4 14.4 0 8 6.5 14.4 14.4 14.4 8 0 14.4-6.5 14.4-14.4.1-7.9-6.4-14.4-14.4-14.4z"/>
+    <path class="gold" d="M145.7 66.1c7.5 7.8 12.9 17.5 15.3 28.4.9 4.1 5.3 6.4 9.2 4.8l13.5-5.6c3.4-1.4 5.1-5.2 3.9-8.7-4.3-13-11.8-24.8-21.7-34.4-2.6-2.5-6.7-2.5-9.3 0l-10.7 10.4c-1.4 1.4-2.1 3.2-2 5.1.1 1.5.7 2.9 1.8 4z"/>
+  </g>
+  <g transform="translate(0 205)">
+    <text x="0" y="34" class="text-blue" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" letter-spacing="-2">br</text>
+    <text x="44" y="34" class="text-gold" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" letter-spacing="-2">code</text>
+    <text x="2" y="52" class="text-blue" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" letter-spacing=".3">Éclairer l'avenir, sécuriser le présent.</text>
+  </g>
+</svg>

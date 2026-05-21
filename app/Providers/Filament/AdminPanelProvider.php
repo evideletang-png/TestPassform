@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
                 'gray'    => Color::Slate,
             ])
             ->brandName('BR Code')
-            ->brandLogo('https://ewri63etij3.exactdn.com/wp-content/uploads/2025/04/logo-2-couleurs-2025.png?strip=all&lossy=1&ssl=1')
+            ->brandLogo(asset('images/brcode-logo.svg'))
             ->brandLogoHeight('3.25rem')
             ->favicon(null)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -78,6 +78,19 @@ class AdminPanelProvider extends PanelProvider
                             linear-gradient(90deg, rgba(214, 162, 58, .26), transparent 34%, rgba(255, 255, 255, .16));
                     }
 
+                    .fi-simple-layout::before {
+                        content: "Émargement digital";
+                        position: fixed;
+                        left: clamp(1.25rem, 5vw, 5rem);
+                        bottom: clamp(1.25rem, 5vw, 4rem);
+                        color: rgba(255, 255, 255, .13);
+                        font-size: clamp(2rem, 7vw, 7rem);
+                        font-weight: 800;
+                        letter-spacing: 0;
+                        line-height: .9;
+                        pointer-events: none;
+                    }
+
                     .fi-simple-main-ctn {
                         min-height: 100vh !important;
                         display: grid !important;
@@ -92,6 +105,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-simple-main .fi-simple-header {
                         margin-bottom: 1.25rem;
+                        text-align: center;
                     }
 
                     .fi-simple-main .fi-simple-header-heading {
@@ -118,9 +132,10 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-simple-main .fi-logo img {
                         width: auto !important;
-                        height: 5rem !important;
-                        max-width: 15rem !important;
+                        height: 7rem !important;
+                        max-width: 17rem !important;
                         object-fit: contain !important;
+                        filter: drop-shadow(0 18px 34px rgba(0, 0, 0, .22));
                     }
 
                     .fi-sidebar-header .fi-logo img {
@@ -134,10 +149,14 @@ class AdminPanelProvider extends PanelProvider
                     .fi-simple-main .fi-card,
                     .fi-simple-main form {
                         border: 1px solid rgba(255, 255, 255, .72);
-                        border-radius: 1.25rem;
+                        border-radius: 1.5rem;
                         background: rgba(255, 255, 255, .96);
                         box-shadow: 0 24px 70px rgba(15, 23, 42, .26);
                         backdrop-filter: blur(18px);
+                    }
+
+                    .fi-simple-main form {
+                        padding: 1.25rem !important;
                     }
 
                     .fi-sidebar {
