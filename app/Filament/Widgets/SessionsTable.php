@@ -11,7 +11,10 @@ use Illuminate\Database\Eloquent\Builder;
 class SessionsTable extends BaseWidget
 {
     protected static ?int $sort = 2;
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = [
+        'default' => 'full',
+        'xl' => 6,
+    ];
     protected static ?string $heading = 'À piloter maintenant';
     protected static ?string $pollingInterval = '30s';
 
