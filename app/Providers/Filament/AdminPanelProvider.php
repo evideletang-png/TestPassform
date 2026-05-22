@@ -60,6 +60,8 @@ class AdminPanelProvider extends PanelProvider
                         --pf-blue-deep: #0d2848;
                         --pf-gold: #d6a23a;
                         --pf-gold-soft: #f5dfaa;
+                        --pf-dashboard-gutter: clamp(1rem, 3vw, 4rem);
+                        --pf-dashboard-width: min(1840px, calc(100vw - (var(--pf-dashboard-gutter) * 2)));
                     }
 
                     .fi-body {
@@ -449,15 +451,29 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-main {
                         width: 100%;
-                        max-width: min(1760px, calc(100vw - clamp(2rem, 5vw, 6rem)));
+                        max-width: var(--pf-dashboard-width);
                         margin-inline: auto;
                         padding-inline: 0;
                         padding-block: clamp(2rem, 4vw, 3.5rem);
                     }
 
                     .fi-header {
-                        max-width: min(1760px, calc(100vw - clamp(2rem, 5vw, 6rem)));
+                        width: var(--pf-dashboard-width);
+                        max-width: var(--pf-dashboard-width);
                         margin-inline: auto;
+                    }
+
+                    .fi-main > *,
+                    .fi-page,
+                    .fi-page > *,
+                    .fi-page-content,
+                    .fi-page-content > *,
+                    .fi-widgets,
+                    .fi-widgets > *,
+                    .fi-wi-widget,
+                    .fi-wi-widget > div {
+                        width: 100% !important;
+                        max-width: var(--pf-dashboard-width) !important;
                     }
 
                     .fi-header-heading {
@@ -573,7 +589,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command {
                         display: grid;
-                        grid-template-columns: minmax(0, 1.55fr) minmax(22rem, .65fr);
+                        grid-template-columns: minmax(0, 1.6fr) minmax(22rem, .6fr);
                         gap: clamp(1rem, 2vw, 1.5rem);
                         align-items: stretch;
                         overflow: hidden;
@@ -592,7 +608,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command__grid {
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+                        grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
                         gap: .85rem;
                         margin-top: 1.35rem;
                     }
@@ -847,13 +863,17 @@ class AdminPanelProvider extends PanelProvider
                     .fi-wi-stats-overview,
                     .fi-ta-ctn {
                         width: 100% !important;
-                        max-width: none !important;
+                        max-width: var(--pf-dashboard-width) !important;
                         margin-inline: auto !important;
                     }
 
                     @media (max-width: 768px) {
+                        :root {
+                            --pf-dashboard-gutter: 1rem;
+                        }
+
                         .fi-main {
-                            max-width: calc(100vw - 2rem) !important;
+                            max-width: var(--pf-dashboard-width) !important;
                             padding-inline: 0 !important;
                         }
 
