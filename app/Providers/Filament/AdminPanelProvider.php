@@ -206,16 +206,36 @@ class AdminPanelProvider extends PanelProvider
                         min-height: 3.25rem !important;
                     }
 
+                    .fi-simple-main .fi-input-wrp > :first-child,
+                    .fi-simple-main .fi-input-wrp .fi-input-wrp-input {
+                        flex: 1 1 auto !important;
+                        min-width: 0 !important;
+                    }
+
                     .fi-simple-main .fi-input,
                     .fi-simple-main input:not([type="checkbox"]):not([type="radio"]) {
+                        width: 100% !important;
                         min-height: 3.25rem !important;
+                        border: 0 !important;
+                        outline: 0 !important;
                         background: transparent !important;
+                        box-shadow: none !important;
                         color: var(--pf-ink) !important;
                         font-size: .98rem !important;
+                        padding-block: 0 !important;
+                        -webkit-appearance: none !important;
+                        appearance: none !important;
                     }
 
                     .fi-simple-main .fi-input {
                         width: 100% !important;
+                    }
+
+                    .fi-simple-main .fi-input:focus,
+                    .fi-simple-main input:not([type="checkbox"]):not([type="radio"]):focus {
+                        border: 0 !important;
+                        outline: 0 !important;
+                        box-shadow: none !important;
                     }
 
                     .fi-simple-main input[type="checkbox"],
