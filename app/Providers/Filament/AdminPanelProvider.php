@@ -40,7 +40,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('BR Code')
             ->brandLogo(asset('images/brcode-logo.jpg'))
             ->brandLogoHeight('3.25rem')
-            ->topNavigation()
             ->favicon(null)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -343,6 +342,11 @@ class AdminPanelProvider extends PanelProvider
                         backdrop-filter: blur(18px);
                     }
 
+                    .fi-sidebar,
+                    .fi-topbar {
+                        display: none !important;
+                    }
+
                     .fi-topbar > nav {
                         border-bottom: 1px solid var(--pf-line);
                         background: rgba(255, 255, 255, .78);
@@ -428,8 +432,8 @@ class AdminPanelProvider extends PanelProvider
                         min-height: 100vh;
                         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
                         background:
-                            linear-gradient(135deg, rgba(214, 162, 58, .10), transparent 28rem),
-                            linear-gradient(225deg, rgba(20, 63, 115, .10), transparent 30rem),
+                            linear-gradient(135deg, rgba(20, 63, 115, .08), transparent 26rem),
+                            linear-gradient(225deg, rgba(214, 162, 58, .08), transparent 28rem),
                             #f5f7fb;
                     }
 
@@ -445,10 +449,15 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-main {
                         width: 100%;
-                        max-width: none;
+                        max-width: 1180px;
                         margin-inline: auto;
                         padding-inline: clamp(1.25rem, 3vw, 3rem);
-                        padding-block: clamp(1.25rem, 2vw, 2rem);
+                        padding-block: clamp(2rem, 4vw, 3.5rem);
+                    }
+
+                    .fi-header {
+                        max-width: 1180px;
+                        margin-inline: auto;
                     }
 
                     .fi-header-heading {
@@ -564,10 +573,13 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command {
                         display: grid;
-                        grid-template-columns: minmax(0, 1.25fr) minmax(20rem, .75fr);
+                        grid-template-columns: minmax(0, 1.2fr) minmax(18rem, .7fr);
                         gap: clamp(1rem, 2vw, 1.5rem);
                         align-items: stretch;
                         overflow: hidden;
+                        width: 100%;
+                        max-width: 1180px;
+                        margin-inline: auto;
                         border: 1px solid rgba(255, 255, 255, .18);
                         border-radius: 1.25rem;
                         background:
@@ -580,7 +592,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command__grid {
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+                        grid-template-columns: repeat(2, minmax(0, 1fr));
                         gap: .85rem;
                         margin-top: 1.35rem;
                     }
@@ -637,12 +649,45 @@ class AdminPanelProvider extends PanelProvider
                         min-width: 0;
                     }
 
+                    .pf-command__topline {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 1rem;
+                    }
+
                     .pf-command__eyebrow {
                         color: var(--pf-gold-soft);
                         font-size: .78rem;
                         font-weight: 800;
                         letter-spacing: .08em;
                         text-transform: uppercase;
+                    }
+
+                    .pf-command__nav {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: .5rem;
+                        justify-content: flex-end;
+                    }
+
+                    .pf-command__nav a {
+                        display: inline-flex;
+                        min-height: 2.15rem;
+                        align-items: center;
+                        border: 1px solid rgba(255, 255, 255, .16);
+                        border-radius: .65rem;
+                        background: rgba(255, 255, 255, .08);
+                        color: rgba(255, 255, 255, .84);
+                        font-size: .78rem;
+                        font-weight: 800;
+                        padding-inline: .75rem;
+                        text-decoration: none;
+                    }
+
+                    .pf-command__nav a:hover {
+                        border-color: rgba(214, 162, 58, .52);
+                        color: #ffffff;
                     }
 
                     .pf-command h2 {
@@ -795,6 +840,16 @@ class AdminPanelProvider extends PanelProvider
                         max-height: 1.25rem !important;
                     }
 
+                    .fi-page,
+                    .fi-page > section,
+                    .fi-wi-widget,
+                    .fi-wi-widget > div,
+                    .fi-wi-stats-overview,
+                    .fi-ta-ctn {
+                        max-width: 1180px !important;
+                        margin-inline: auto !important;
+                    }
+
                     @media (max-width: 768px) {
                         .fi-main {
                             padding-inline: 1rem !important;
@@ -806,6 +861,19 @@ class AdminPanelProvider extends PanelProvider
 
                         .pf-command {
                             grid-template-columns: 1fr;
+                        }
+
+                        .pf-command__grid {
+                            grid-template-columns: 1fr;
+                        }
+
+                        .pf-command__topline {
+                            align-items: flex-start;
+                            flex-direction: column;
+                        }
+
+                        .pf-command__nav {
+                            justify-content: flex-start;
                         }
                     }
                 </style>

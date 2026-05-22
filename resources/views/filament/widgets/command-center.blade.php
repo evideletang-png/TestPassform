@@ -1,7 +1,17 @@
 <x-filament-widgets::widget>
     <section class="pf-command">
         <div class="pf-command__copy">
-            <div class="pf-command__eyebrow">Espace émargement sécurisé</div>
+            <div class="pf-command__topline">
+                <div class="pf-command__eyebrow">Espace émargement sécurisé</div>
+                <div class="pf-command__nav">
+                    <a href="{{ $sessionsUrl }}">Sessions</a>
+                    @if ($isAdmin)
+                        <a href="{{ $usersUrl }}">Formateurs</a>
+                        <a href="{{ $parametresUrl }}">Paramètres</a>
+                    @endif
+                </div>
+            </div>
+
             <h2>Bonjour {{ $name }}</h2>
             <p>
                 Pilotez les sessions, signatures et obligations de conservation depuis un tableau de bord clair.
