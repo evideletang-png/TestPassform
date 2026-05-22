@@ -27,8 +27,8 @@
 @endif
 
 @if(!$djEnCours)
-    <div class="card" style="text-align:center;padding:30px 20px">
-        <div style="font-size:40px;margin-bottom:12px">🕐</div>
+    <div class="card empty-state">
+        <div class="empty-state__icon" aria-hidden="true">i</div>
         <div style="font-weight:600;margin-bottom:6px">Aucun émargement ouvert</div>
         <div style="font-size:13px;color:var(--text-sec)">
             Le formateur n'a pas encore ouvert l'émargement pour la demi-journée en cours.<br>
@@ -192,7 +192,7 @@
 
         {{-- Notice RGPD ── --}}
         <div class="rgpd-notice">
-            🔒 Vos données sont chiffrées et traitées conformément au RGPD.
+            Vos données sont chiffrées et traitées conformément au RGPD.
             Le NIR est collecté dans le cadre du Passeport de Prévention pour déclaration à la Caisse des Dépôts.
             Il sera supprimé automatiquement après traitement.
         </div>

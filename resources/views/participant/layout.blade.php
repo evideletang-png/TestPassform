@@ -326,6 +326,7 @@
             .card { padding: 16px; }
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/passform-public.css') }}">
 </head>
 <body>
 

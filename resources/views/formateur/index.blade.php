@@ -43,6 +43,7 @@
         .sep { height:1px; background:var(--border); margin:14px 0; }
         .sig-done-img { border:1px solid var(--border); border-radius:8px; max-width:100%; background:#FAFAFA; }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/passform-public.css') }}">
 </head>
 <body>
 
@@ -61,7 +62,7 @@
         </div>
     @endif
 
-    <div class="card" style="margin-bottom:20px; padding:14px 20px">
+    <div class="card formateur-summary" style="margin-bottom:20px; padding:14px 20px">
         <div style="font-size:13px; color:var(--text-sec); margin-bottom:2px">Session</div>
         <div style="font-weight:600; font-size:16px">{{ $session->intitule }}</div>
         @if($session->lieu)
