@@ -61,7 +61,7 @@ class AdminPanelProvider extends PanelProvider
                         --pf-gold: #d6a23a;
                         --pf-gold-soft: #f5dfaa;
                         --pf-dashboard-gutter: clamp(1rem, 3vw, 4rem);
-                        --pf-dashboard-width: min(1840px, calc(100vw - (var(--pf-dashboard-gutter) * 2)));
+                        --pf-dashboard-width: clamp(980px, 88vw, 1840px);
                     }
 
                     .fi-body {
@@ -446,21 +446,24 @@ class AdminPanelProvider extends PanelProvider
                     }
 
                     .fi-main-ctn {
+                        width: 100vw !important;
+                        max-width: none !important;
+                        margin: 0 !important;
                         background: transparent;
                     }
 
                     .fi-main {
-                        width: 100%;
-                        max-width: var(--pf-dashboard-width);
-                        margin-inline: auto;
-                        padding-inline: 0;
-                        padding-block: clamp(2rem, 4vw, 3.5rem);
+                        width: var(--pf-dashboard-width) !important;
+                        max-width: var(--pf-dashboard-width) !important;
+                        margin-inline: auto !important;
+                        padding-inline: 0 !important;
+                        padding-block: clamp(2rem, 4vw, 3.5rem) !important;
                     }
 
                     .fi-header {
-                        width: var(--pf-dashboard-width);
-                        max-width: var(--pf-dashboard-width);
-                        margin-inline: auto;
+                        width: var(--pf-dashboard-width) !important;
+                        max-width: var(--pf-dashboard-width) !important;
+                        margin-inline: auto !important;
                     }
 
                     .fi-main > *,
@@ -471,9 +474,15 @@ class AdminPanelProvider extends PanelProvider
                     .fi-widgets,
                     .fi-widgets > *,
                     .fi-wi-widget,
-                    .fi-wi-widget > div {
+                    .fi-wi-widget > div,
+                    .fi-wi-stats-overview,
+                    .fi-wi-stats-overview-stats-ctn,
+                    .fi-ta-ctn,
+                    .fi-section,
+                    .fi-ta {
                         width: 100% !important;
                         max-width: var(--pf-dashboard-width) !important;
+                        min-width: 0 !important;
                     }
 
                     .fi-header-heading {
