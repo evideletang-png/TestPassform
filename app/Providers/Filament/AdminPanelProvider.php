@@ -449,14 +449,14 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-main {
                         width: 100%;
-                        max-width: 1180px;
+                        max-width: min(1760px, calc(100vw - clamp(2rem, 5vw, 6rem)));
                         margin-inline: auto;
-                        padding-inline: clamp(1.25rem, 3vw, 3rem);
+                        padding-inline: 0;
                         padding-block: clamp(2rem, 4vw, 3.5rem);
                     }
 
                     .fi-header {
-                        max-width: 1180px;
+                        max-width: min(1760px, calc(100vw - clamp(2rem, 5vw, 6rem)));
                         margin-inline: auto;
                     }
 
@@ -573,12 +573,12 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command {
                         display: grid;
-                        grid-template-columns: minmax(0, 1.2fr) minmax(18rem, .7fr);
+                        grid-template-columns: minmax(0, 1.55fr) minmax(22rem, .65fr);
                         gap: clamp(1rem, 2vw, 1.5rem);
                         align-items: stretch;
                         overflow: hidden;
                         width: 100%;
-                        max-width: 1180px;
+                        max-width: none;
                         margin-inline: auto;
                         border: 1px solid rgba(255, 255, 255, .18);
                         border-radius: 1.25rem;
@@ -592,7 +592,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command__grid {
                         display: grid;
-                        grid-template-columns: repeat(2, minmax(0, 1fr));
+                        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
                         gap: .85rem;
                         margin-top: 1.35rem;
                     }
@@ -846,13 +846,15 @@ class AdminPanelProvider extends PanelProvider
                     .fi-wi-widget > div,
                     .fi-wi-stats-overview,
                     .fi-ta-ctn {
-                        max-width: 1180px !important;
+                        width: 100% !important;
+                        max-width: none !important;
                         margin-inline: auto !important;
                     }
 
                     @media (max-width: 768px) {
                         .fi-main {
-                            padding-inline: 1rem !important;
+                            max-width: calc(100vw - 2rem) !important;
+                            padding-inline: 0 !important;
                         }
 
                         .fi-wi-stats-overview-stat-value {
