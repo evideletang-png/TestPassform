@@ -60,6 +60,9 @@ class AdminPanelProvider extends PanelProvider
                         --pf-blue-deep: #0d2848;
                         --pf-gold: #d6a23a;
                         --pf-gold-soft: #f5dfaa;
+                        --pf-navy-panel: linear-gradient(135deg, rgba(16, 35, 63, .98), rgba(20, 63, 115, .94));
+                        --pf-navy-tile: rgba(255, 255, 255, .08);
+                        --pf-navy-tile-border: rgba(255, 255, 255, .16);
                         --pf-dashboard-gutter: clamp(1rem, 2vw, 2.75rem);
                         --pf-dashboard-width: calc(100vw - (var(--pf-dashboard-gutter) * 2));
                     }
@@ -532,9 +535,10 @@ class AdminPanelProvider extends PanelProvider
                     .fi-section,
                     .fi-ta {
                         overflow: hidden;
-                        border-color: rgba(15, 35, 63, .10) !important;
-                        background:
-                            linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(255, 255, 255, .88)) !important;
+                        border: 1px solid var(--pf-navy-tile-border) !important;
+                        background: var(--pf-navy-panel) !important;
+                        box-shadow: 0 22px 58px rgba(16, 35, 63, .14) !important;
+                        color: #ffffff !important;
                     }
 
                     .fi-wi-stats-overview-stat::before {
@@ -542,7 +546,7 @@ class AdminPanelProvider extends PanelProvider
                         position: absolute;
                         inset: 0 auto 0 0;
                         width: .25rem;
-                        background: linear-gradient(180deg, var(--pf-gold), var(--pf-blue));
+                        background: linear-gradient(180deg, var(--pf-gold), rgba(255, 255, 255, .36));
                     }
 
                     .fi-wi-stats-overview-stat {
@@ -553,13 +557,17 @@ class AdminPanelProvider extends PanelProvider
                     .fi-wi-stats-overview-stat-label,
                     .fi-section-header-heading,
                     .fi-ta-header-heading {
-                        color: var(--pf-ink) !important;
+                        color: #ffffff !important;
                         font-weight: 800 !important;
                         letter-spacing: 0 !important;
                     }
 
+                    .fi-wi-stats-overview-stat-value {
+                        color: #ffffff !important;
+                    }
+
                     .fi-wi-stats-overview-stat-description {
-                        color: var(--pf-muted) !important;
+                        color: rgba(226, 232, 240, .72) !important;
                     }
 
                     .fi-ta-content {
@@ -568,7 +576,43 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-ta-header,
                     .fi-section-header {
-                        background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(248, 250, 252, .88));
+                        border-bottom: 1px solid var(--pf-navy-tile-border);
+                        background: rgba(255, 255, 255, .06) !important;
+                    }
+
+                    .fi-section-content,
+                    .fi-ta-content,
+                    .fi-ta-table,
+                    .fi-ta-table thead,
+                    .fi-ta-table tbody,
+                    .fi-ta-table tr {
+                        background: transparent !important;
+                    }
+
+                    .fi-ta-table th,
+                    .fi-ta-table td,
+                    .fi-ta-table span,
+                    .fi-ta-table p,
+                    .fi-ta-text,
+                    .fi-ta-cell,
+                    .fi-section-content,
+                    .fi-section-content p,
+                    .fi-section-content span {
+                        color: rgba(226, 232, 240, .78) !important;
+                    }
+
+                    .fi-ta-table strong,
+                    .fi-ta-text-item-label,
+                    .fi-section-content strong {
+                        color: #ffffff !important;
+                    }
+
+                    .fi-ta-row {
+                        border-color: rgba(255, 255, 255, .08) !important;
+                    }
+
+                    .fi-ta-row:hover {
+                        background: rgba(255, 255, 255, .07) !important;
                     }
 
                     .fi-ta-empty-state {
@@ -597,15 +641,51 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-ta-empty-state-heading {
                         margin-top: 1rem !important;
-                        color: var(--pf-ink) !important;
+                        color: #ffffff !important;
                         font-size: 1rem !important;
                         font-weight: 800 !important;
                     }
 
                     .fi-ta-empty-state-description {
                         margin-top: .35rem !important;
-                        color: var(--pf-muted) !important;
+                        color: rgba(226, 232, 240, .72) !important;
                         font-size: .92rem !important;
+                    }
+
+                    .fi-ta-empty-state a,
+                    .fi-ta-empty-state .fi-btn {
+                        border-color: rgba(214, 162, 58, .72) !important;
+                        background: linear-gradient(135deg, var(--pf-gold), #edcb76) !important;
+                        color: #10233f !important;
+                        box-shadow: 0 16px 30px rgba(214, 162, 58, .18) !important;
+                    }
+
+                    .fi-section .fi-fo-field-wrp-label,
+                    .fi-section .fi-fo-field-wrp-label span,
+                    .fi-section .fi-fo-field-wrp-helper-text,
+                    .fi-section label {
+                        color: rgba(226, 232, 240, .78) !important;
+                    }
+
+                    .fi-section .fi-input-wrp,
+                    .fi-section .fi-select-input,
+                    .fi-section .fi-textarea,
+                    .fi-section .fi-fo-repeater-item {
+                        border-color: rgba(255, 255, 255, .16) !important;
+                        background: rgba(255, 255, 255, .92) !important;
+                        color: var(--pf-ink) !important;
+                    }
+
+                    .fi-section .fi-input,
+                    .fi-section input,
+                    .fi-section textarea,
+                    .fi-section select {
+                        color: var(--pf-ink) !important;
+                    }
+
+                    .fi-section .fi-fo-repeater-item {
+                        border-radius: 1rem !important;
+                        box-shadow: none !important;
                     }
 
                     .pf-command {
