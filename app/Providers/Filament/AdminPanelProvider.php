@@ -409,10 +409,17 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-layout {
                         min-height: 100vh;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
                         background:
                             linear-gradient(135deg, rgba(214, 162, 58, .10), transparent 28rem),
                             linear-gradient(225deg, rgba(20, 63, 115, .10), transparent 30rem),
                             #f5f7fb;
+                    }
+
+                    .fi-body,
+                    .fi-layout,
+                    .fi-layout * {
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
                     }
 
                     .fi-main-ctn {
@@ -421,6 +428,9 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-main {
                         width: 100%;
+                        max-width: 1280px;
+                        margin-inline: auto;
+                        padding-inline: clamp(1rem, 2vw, 1.75rem);
                         padding-block: clamp(1.25rem, 2vw, 2rem);
                     }
 
@@ -433,6 +443,22 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-sidebar-nav {
                         padding-inline: .75rem !important;
+                    }
+
+                    .fi-sidebar,
+                    .fi-sidebar-nav {
+                        width: 17rem !important;
+                    }
+
+                    .fi-sidebar-header {
+                        padding-inline: 1rem !important;
+                    }
+
+                    .fi-sidebar-item-button {
+                        min-height: 2.75rem !important;
+                        align-items: center !important;
+                        gap: .75rem !important;
+                        padding-inline: .85rem !important;
                     }
 
                     .fi-sidebar-item-label {
@@ -483,7 +509,40 @@ class AdminPanelProvider extends PanelProvider
                     }
 
                     .fi-ta-empty-state {
+                        display: grid !important;
+                        min-height: 18rem !important;
+                        place-items: center !important;
                         padding-block: 3rem !important;
+                        text-align: center !important;
+                    }
+
+                    .fi-ta-empty-state svg,
+                    .fi-ta-empty-state-icon,
+                    .fi-ta-empty-state-icon svg {
+                        width: 3rem !important;
+                        height: 3rem !important;
+                        min-width: 3rem !important;
+                        min-height: 3rem !important;
+                        max-width: 3rem !important;
+                        max-height: 3rem !important;
+                    }
+
+                    .fi-ta-empty-state > svg {
+                        display: block !important;
+                        margin-inline: auto !important;
+                    }
+
+                    .fi-ta-empty-state-heading {
+                        margin-top: 1rem !important;
+                        color: var(--pf-ink) !important;
+                        font-size: 1rem !important;
+                        font-weight: 800 !important;
+                    }
+
+                    .fi-ta-empty-state-description {
+                        margin-top: .35rem !important;
+                        color: var(--pf-muted) !important;
+                        font-size: .92rem !important;
                     }
 
                     .pf-command {
@@ -626,7 +685,9 @@ class AdminPanelProvider extends PanelProvider
                     .fi-icon,
                     svg.fi-icon,
                     .fi-section-header-icon,
-                    .fi-wi-stats-overview-stat-description-icon {
+                    .fi-wi-stats-overview-stat-description-icon,
+                    .fi-user-avatar,
+                    .fi-avatar {
                         width: 1.125rem !important;
                         height: 1.125rem !important;
                         min-width: 1.125rem !important;
@@ -642,9 +703,27 @@ class AdminPanelProvider extends PanelProvider
                     .fi-badge-icon svg,
                     .fi-icon svg,
                     .fi-section-header-icon svg,
-                    .fi-wi-stats-overview-stat-description-icon svg {
+                    .fi-wi-stats-overview-stat-description-icon svg,
+                    .fi-user-avatar svg,
+                    .fi-avatar svg {
                         width: 100% !important;
                         height: 100% !important;
+                    }
+
+                    .fi-sidebar svg,
+                    .fi-topbar svg,
+                    .fi-btn svg,
+                    .fi-badge svg,
+                    .fi-ta svg:not(.fi-ta-empty-state svg) {
+                        width: 1.125rem !important;
+                        height: 1.125rem !important;
+                        min-width: 1.125rem !important;
+                        min-height: 1.125rem !important;
+                    }
+
+                    .fi-layout svg:not(.fi-ta-empty-state svg) {
+                        max-width: 1.25rem !important;
+                        max-height: 1.25rem !important;
                     }
 
                     @media (max-width: 768px) {
