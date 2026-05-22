@@ -60,8 +60,8 @@ class AdminPanelProvider extends PanelProvider
                         --pf-blue-deep: #0d2848;
                         --pf-gold: #d6a23a;
                         --pf-gold-soft: #f5dfaa;
-                        --pf-dashboard-gutter: clamp(1rem, 3vw, 4rem);
-                        --pf-dashboard-width: clamp(980px, 88vw, 1840px);
+                        --pf-dashboard-gutter: clamp(1rem, 2vw, 2.75rem);
+                        --pf-dashboard-width: calc(100vw - (var(--pf-dashboard-gutter) * 2));
                     }
 
                     .fi-body {
@@ -610,7 +610,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command {
                         display: grid;
-                        grid-template-columns: minmax(0, 1.6fr) minmax(22rem, .6fr);
+                        grid-template-columns: minmax(0, 1.8fr) minmax(24rem, .55fr);
                         gap: clamp(1rem, 2vw, 1.5rem);
                         align-items: stretch;
                         overflow: hidden;
@@ -629,7 +629,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command__grid {
                         display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+                        grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
                         gap: .85rem;
                         margin-top: 1.35rem;
                     }
