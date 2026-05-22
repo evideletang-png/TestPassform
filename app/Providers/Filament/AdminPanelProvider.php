@@ -200,13 +200,30 @@ class AdminPanelProvider extends PanelProvider
                         box-shadow: 0 0 0 4px rgba(20, 63, 115, .12) !important;
                     }
 
+                    .fi-simple-main .fi-input-wrp {
+                        display: flex !important;
+                        align-items: center !important;
+                        min-height: 3.25rem !important;
+                    }
+
                     .fi-simple-main .fi-input,
-                    .fi-simple-main input {
-                        width: 100% !important;
+                    .fi-simple-main input:not([type="checkbox"]):not([type="radio"]) {
                         min-height: 3.25rem !important;
                         background: transparent !important;
                         color: var(--pf-ink) !important;
                         font-size: .98rem !important;
+                    }
+
+                    .fi-simple-main .fi-input {
+                        width: 100% !important;
+                    }
+
+                    .fi-simple-main input[type="checkbox"],
+                    .fi-simple-main input[type="radio"] {
+                        width: 1rem !important;
+                        height: 1rem !important;
+                        min-width: 1rem !important;
+                        min-height: 1rem !important;
                     }
 
                     .fi-simple-main input:-webkit-autofill,
@@ -283,6 +300,17 @@ class AdminPanelProvider extends PanelProvider
                     .fi-simple-main .fi-icon-btn.fi-btn svg {
                         width: 1.15rem !important;
                         height: 1.15rem !important;
+                    }
+
+                    .fi-simple-main .fi-icon-btn .fi-btn-label,
+                    .fi-simple-main .fi-icon-btn .sr-only {
+                        position: absolute !important;
+                        width: 1px !important;
+                        height: 1px !important;
+                        margin: -1px !important;
+                        overflow: hidden !important;
+                        clip: rect(0, 0, 0, 0) !important;
+                        white-space: nowrap !important;
                     }
 
                     .fi-simple-main .fi-ac {
