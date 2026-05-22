@@ -485,6 +485,18 @@ class AdminPanelProvider extends PanelProvider
                         min-width: 0 !important;
                     }
 
+                    .fi-widgets,
+                    .fi-widgets > div,
+                    .fi-page-content > div {
+                        display: grid !important;
+                        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+                        gap: 1rem !important;
+                    }
+
+                    .fi-wi-widget {
+                        grid-column: 1 / -1 !important;
+                    }
+
                     .fi-header-heading {
                         color: var(--pf-ink) !important;
                         font-size: clamp(1.6rem, 2vw, 2.15rem) !important;
