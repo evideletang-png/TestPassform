@@ -7,16 +7,28 @@
                 Pilotez les sessions, signatures et obligations de conservation depuis un tableau de bord clair.
             </p>
 
-            <div class="pf-command__actions">
-                <a href="{{ $createSessionUrl }}" class="pf-command__button pf-command__button--primary">
-                    Nouvelle session
+            <div class="pf-command__grid">
+                <a href="{{ $createSessionUrl }}" class="pf-command__tile pf-command__tile--primary">
+                    <strong>Nouvelle session</strong>
+                    <span>Créer une formation, planifier les créneaux et préparer les liens d'émargement.</span>
                 </a>
-                <a href="{{ $sessionsUrl }}" class="pf-command__button">
-                    Voir les sessions
+
+                <a href="{{ $sessionsUrl }}" class="pf-command__tile">
+                    <strong>Piloter les sessions</strong>
+                    <span>Ouvrir les émargements, suivre les signatures et accéder aux exports.</span>
                 </a>
-                <a href="{{ $parametresUrl }}" class="pf-command__button">
-                    Paramètres
-                </a>
+
+                @if ($isAdmin)
+                    <a href="{{ $usersUrl }}" class="pf-command__tile">
+                        <strong>Formateurs</strong>
+                        <span>Créer les accès, attribuer les rôles et suivre l'activité des comptes.</span>
+                    </a>
+
+                    <a href="{{ $parametresUrl }}" class="pf-command__tile">
+                        <strong>Paramètres</strong>
+                        <span>Configurer l'organisme, la sécurité des liens et les règles RGPD.</span>
+                    </a>
+                @endif
             </div>
         </div>
 

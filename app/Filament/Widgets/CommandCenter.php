@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Pages\Parametres;
 use App\Filament\Resources\SessionFormationResource;
+use App\Filament\Resources\UserResource;
 use App\Models\SessionFormation;
 use Filament\Widgets\Widget;
 
@@ -28,12 +29,14 @@ class CommandCenter extends Widget
 
         return [
             'name' => $user->name,
+            'isAdmin' => $user->isAdmin(),
             'sessionEnCours' => $sessionEnCours,
             'sessionsEnCoursCount' => (clone $sessionsQuery)->where('statut', 'en_cours')->count(),
             'sessionsPlanifieesCount' => (clone $sessionsQuery)->where('statut', 'planifiee')->count(),
             'createSessionUrl' => SessionFormationResource::getUrl('create'),
             'sessionsUrl' => SessionFormationResource::getUrl('index'),
-            'parametresUrl' => Parametres::getUrl(),
+            'usersUrl' => $user->isAdmin() ? UserResource::getUrl('index') : null,
+            'parametresUrl' => $user->isAdmin() ? Parametres::getUrl() : null,
         ];
     }
 }

@@ -12,7 +12,6 @@ use App\Filament\Widgets\SessionsTable;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -41,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('BR Code')
             ->brandLogo(asset('images/brcode-logo.jpg'))
             ->brandLogoHeight('3.25rem')
+            ->topNavigation()
             ->favicon(null)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -349,8 +349,25 @@ class AdminPanelProvider extends PanelProvider
                         backdrop-filter: blur(18px);
                     }
 
+                    .fi-topbar .fi-logo img {
+                        width: auto !important;
+                        height: 2.4rem !important;
+                        max-width: 10rem !important;
+                        object-fit: contain !important;
+                    }
+
+                    .fi-topbar nav {
+                        min-height: 4.75rem;
+                    }
+
+                    .fi-topbar .fi-topbar-item,
+                    .fi-topbar .fi-dropdown-trigger,
+                    .fi-topbar a {
+                        font-weight: 750;
+                    }
+
                     .fi-main {
-                        max-width: 1440px;
+                        max-width: none;
                     }
 
                     .fi-section,
@@ -428,9 +445,9 @@ class AdminPanelProvider extends PanelProvider
 
                     .fi-main {
                         width: 100%;
-                        max-width: 1280px;
+                        max-width: none;
                         margin-inline: auto;
-                        padding-inline: clamp(1rem, 2vw, 1.75rem);
+                        padding-inline: clamp(1.25rem, 3vw, 3rem);
                         padding-block: clamp(1.25rem, 2vw, 2rem);
                     }
 
@@ -547,7 +564,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .pf-command {
                         display: grid;
-                        grid-template-columns: minmax(0, 1.45fr) minmax(18rem, .75fr);
+                        grid-template-columns: minmax(0, 1.25fr) minmax(20rem, .75fr);
                         gap: clamp(1rem, 2vw, 1.5rem);
                         align-items: stretch;
                         overflow: hidden;
@@ -559,6 +576,58 @@ class AdminPanelProvider extends PanelProvider
                         box-shadow: 0 24px 70px rgba(16, 35, 63, .16);
                         color: #fff;
                         padding: clamp(1.25rem, 3vw, 2rem);
+                    }
+
+                    .pf-command__grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+                        gap: .85rem;
+                        margin-top: 1.35rem;
+                    }
+
+                    .pf-command__tile {
+                        display: flex;
+                        min-height: 6.75rem;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        border: 1px solid rgba(255, 255, 255, .14);
+                        border-radius: .9rem;
+                        background: rgba(255, 255, 255, .08);
+                        color: #ffffff;
+                        padding: 1rem;
+                        text-decoration: none;
+                        transition: background .18s ease, transform .18s ease, border-color .18s ease;
+                    }
+
+                    .pf-command__tile:hover {
+                        border-color: rgba(214, 162, 58, .62);
+                        background: rgba(255, 255, 255, .12);
+                        transform: translateY(-1px);
+                    }
+
+                    .pf-command__tile strong {
+                        color: #ffffff;
+                        font-size: .98rem;
+                        font-weight: 850;
+                        line-height: 1.2;
+                    }
+
+                    .pf-command__tile span {
+                        margin-top: .6rem;
+                        color: rgba(226, 232, 240, .70);
+                        font-size: .82rem;
+                        line-height: 1.45;
+                    }
+
+                    .pf-command__tile--primary {
+                        border-color: rgba(214, 162, 58, .72);
+                        background: linear-gradient(135deg, var(--pf-gold), #edcb76);
+                        color: #10233f;
+                    }
+
+                    .pf-command__tile--primary strong,
+                    .pf-command__tile--primary span {
+                        color: #10233f;
                     }
 
                     .pf-command__copy {
@@ -741,13 +810,6 @@ class AdminPanelProvider extends PanelProvider
                     }
                 </style>
             HTML))
-            ->navigationItems([
-                NavigationItem::make('Documentation RGPD')
-                    ->url('#')
-                    ->icon('heroicon-o-shield-check')
-                    ->sort(99)
-                    ->group('Conformité'),
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

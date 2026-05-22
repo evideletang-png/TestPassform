@@ -82,7 +82,15 @@ class SessionsTable extends BaseWidget
                     ->color('primary')
                     ->url(fn (SessionFormation $s) => \App\Filament\Resources\SessionFormationResource::getUrl('view', ['record' => $s])),
             ])
+            ->paginated(false)
             ->emptyStateHeading('Aucune session active')
-            ->emptyStateDescription('Créez une session pour commencer.');
+            ->emptyStateDescription('Créez une session pour commencer.')
+            ->emptyStateActions([
+                Tables\Actions\Action::make('create')
+                    ->label('Créer une session')
+                    ->icon('heroicon-o-plus')
+                    ->color('primary')
+                    ->url(\App\Filament\Resources\SessionFormationResource::getUrl('create')),
+            ]);
     }
 }
