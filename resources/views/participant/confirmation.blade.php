@@ -2,6 +2,9 @@
 
 @section('content')
 
+<div class="participant-workspace confirmation-workspace">
+<div class="workspace-main">
+
 <div class="card confirmation-card">
 
     {{-- Icône succès --}}
@@ -71,6 +74,13 @@
 
 <div class="rgpd-notice rgpd-notice--compact">
     Signature enregistrée avec horodatage et adresse IP journalisée — Conforme RGPD
+</div>
+
+</div>
+
+<aside class="visual-panel" aria-hidden="true">
+    <img src="{{ asset('images/passform-hero.png') }}" alt="">
+</aside>
 </div>
 
 @endsection

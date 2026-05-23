@@ -88,14 +88,46 @@ body {
 }
 
 .public-shell {
-    width: min(100%, 580px);
-    max-width: 580px !important;
-    padding: clamp(18px, 4vw, 30px) 16px 42px !important;
+    width: min(100%, 1160px);
+    max-width: 1160px !important;
+    padding: clamp(18px, 4vw, 34px) clamp(14px, 3vw, 28px) 46px !important;
 }
 
 .formateur-shell {
-    width: min(100%, 680px);
-    max-width: 680px !important;
+    width: min(100%, 920px);
+    max-width: 920px !important;
+}
+
+.participant-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 580px) minmax(0, 1fr);
+    gap: clamp(18px, 4vw, 34px);
+    align-items: start;
+}
+
+.workspace-main {
+    min-width: 0;
+}
+
+.visual-panel {
+    position: sticky;
+    top: 92px;
+    overflow: hidden;
+    border: 1px solid rgba(23, 32, 51, .10);
+    border-radius: var(--pf-radius);
+    background:
+        linear-gradient(180deg, #ffffff, #eef5fa);
+    box-shadow: var(--pf-shadow);
+}
+
+.visual-panel img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.confirmation-workspace {
+    align-items: center;
 }
 
 .card,
@@ -724,6 +756,25 @@ input[type=number].error {
 
 .mb-16 {
     margin-bottom: 16px !important;
+}
+
+@media (max-width: 900px) {
+    .public-shell {
+        max-width: 680px !important;
+    }
+
+    .participant-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .visual-panel {
+        position: static;
+    }
+
+    .visual-panel img {
+        width: 100%;
+        height: auto;
+    }
 }
 
 @media (max-width: 560px) {

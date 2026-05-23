@@ -2,6 +2,9 @@
 
 @section('content')
 
+<div class="participant-workspace">
+<div class="workspace-main">
+
 {{-- ── Infos session ── --}}
 <section class="session-info session-card" aria-label="Session">
     <div class="session-card__main">
@@ -234,6 +237,13 @@
 </div>
 
 @endif {{-- fin @if($djEnCours) --}}
+
+</div>
+
+<aside class="visual-panel" aria-hidden="true">
+    <img src="{{ asset('images/passform-hero.png') }}" alt="">
+</aside>
+</div>
 @endsection
 
 @push('scripts')

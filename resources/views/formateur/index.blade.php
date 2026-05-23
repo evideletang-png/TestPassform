@@ -43,7 +43,7 @@
         .sep { height:1px; background:var(--border); margin:14px 0; }
         .sig-done-img { border:1px solid var(--border); border-radius:8px; max-width:100%; background:#FAFAFA; }
     </style>
-    <link rel="stylesheet" href="{{ asset('css/passform-public.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/passform-public.css') }}?v={{ filemtime(public_path('css/passform-public.css')) }}">
 </head>
 <body>
 

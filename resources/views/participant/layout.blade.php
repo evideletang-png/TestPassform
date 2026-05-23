@@ -326,7 +326,7 @@
             .card { padding: 16px; }
         }
     </style>
-    <link rel="stylesheet" href="{{ asset('css/passform-public.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/passform-public.css') }}?v={{ filemtime(public_path('css/passform-public.css')) }}">
 </head>
 <body>
 
