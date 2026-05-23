@@ -13,6 +13,6 @@ class Login extends BaseLogin
 
     public function getSubheading(): string
     {
-        return 'Accédez à l’espace sécurisé d’émargement BR Code.';
+        return 'Accédez à l’espace sécurisé d’émargement PassForm.';
     }
 }
