@@ -3,23 +3,35 @@
 @section('content')
 
 {{-- ── Infos session ── --}}
-<div class="session-info">
-    <strong>{{ $session->intitule }}</strong>
-    @if($session->lieu)
-        <span style="color:var(--text-sec)"> · {{ $session->lieu }}</span>
-    @endif
-    <br>
+<section class="session-info session-card" aria-label="Session">
+    <div class="session-card__main">
+        <span class="session-card__label">Session</span>
+        <strong>{{ $session->intitule }}</strong>
+        @if($session->lieu)
+            <span class="session-card__place">{{ $session->lieu }}</span>
+        @endif
+    </div>
+
     @if($djEnCours)
-        <span class="dj-badge">
-            DJ{{ $djEnCours->ordre }} ·
-            {{ $djEnCours->creneau === 'matin' ? 'Matin' : 'Après-midi' }} ·
-            {{ $djEnCours->date->translatedFormat('l d F Y') }} ·
-            {{ substr($djEnCours->heure_debut, 0, 5) }}–{{ substr($djEnCours->heure_fin, 0, 5) }}
-        </span>
+        <div class="session-card__slot">
+            <span class="session-card__dot" aria-hidden="true"></span>
+            <div>
+                <span class="session-card__slot-label">Émargement ouvert</span>
+                <span class="dj-badge">
+                    DJ{{ $djEnCours->ordre }} ·
+                    {{ $djEnCours->creneau === 'matin' ? 'Matin' : 'Après-midi' }} ·
+                    {{ $djEnCours->date->translatedFormat('l d F Y') }} ·
+                    {{ substr($djEnCours->heure_debut, 0, 5) }}–{{ substr($djEnCours->heure_fin, 0, 5) }}
+                </span>
+            </div>
+        </div>
     @else
-        <span style="color:var(--amber)">Aucun émargement ouvert actuellement.</span>
+        <div class="session-card__slot session-card__slot--waiting">
+            <span class="session-card__dot" aria-hidden="true"></span>
+            <div>Aucun émargement ouvert actuellement.</div>
+        </div>
     @endif
-</div>
+</section>
 
 {{-- ── Erreurs globales ── --}}
 @if($errors->has('global'))
@@ -29,8 +41,8 @@
 @if(!$djEnCours)
     <div class="card empty-state">
         <div class="empty-state__icon" aria-hidden="true">i</div>
-        <div style="font-weight:600;margin-bottom:6px">Aucun émargement ouvert</div>
-        <div style="font-size:13px;color:var(--text-sec)">
+        <div class="empty-state__title">Aucun émargement ouvert</div>
+        <div class="empty-state__copy">
             Le formateur n'a pas encore ouvert l'émargement pour la demi-journée en cours.<br>
             Actualisez cette page dans quelques instants.
         </div>
@@ -40,8 +52,11 @@
 {{-- ══════════════════════════════════════════════════════════════
      BLOC 1 : Identification via code (participants déjà inscrits)
 ══════════════════════════════════════════════════════════════ --}}
-<div class="card" id="bloc-code">
-    <div class="card-title">Vous étiez déjà présent à une séance précédente ?</div>
+<div class="card flow-card flow-card--code" id="bloc-code">
+    <div class="card-heading">
+        <span class="card-kicker">Déjà inscrit</span>
+        <h1 class="card-title">Signez avec votre code</h1>
+    </div>
 
     @if($errors->has('code'))
         <div class="alert alert-error">{{ $errors->first('code') }}</div>
@@ -51,29 +66,31 @@
         @csrf
 
         <div class="form-group">
-            <label>Votre code à 3 chiffres</label>
+            <label for="code-field">Code à 3 chiffres</label>
             <div class="code-input-wrap">
                 <input
-                    type="number"
+                    type="text"
                     name="code"
                     id="code-field"
-                    min="100" max="999"
+                    minlength="3"
                     maxlength="3"
                     placeholder="•••"
                     value="{{ old('code') }}"
                     autocomplete="off"
                     inputmode="numeric"
+                    pattern="[0-9]{3}"
+                    oninput="this.value=this.value.replace(/\D/g,'').slice(0,3)"
                     class="{{ $errors->has('code') ? 'error' : '' }}"
                 >
                 <button type="button" class="btn btn-primary" id="btn-valider-code" onclick="validerCode()">
-                    Continuer →
+                    Continuer
                 </button>
             </div>
             <div class="code-hint" id="code-hint"></div>
         </div>
 
         {{-- Pad de signature — affiché après validation du code ── --}}
-        <div id="zone-signature-code" style="display:none">
+        <div id="zone-signature-code" class="signature-zone" hidden>
             <div class="sep"></div>
             <div class="form-group">
                 <label>Signez votre émargement <span class="req">*</span></label>
@@ -82,7 +99,7 @@
                     <div class="sig-placeholder" id="sig-placeholder-code">Signez ici avec votre doigt ou la souris</div>
                 </div>
                 <div class="sig-actions">
-                    <button type="button" class="btn-clear" onclick="clearSig('sig-canvas-code', 'sig-placeholder-code')">✕ Effacer</button>
+                    <button type="button" class="btn-clear" onclick="clearSig('sig-canvas-code', 'sig-placeholder-code')">Effacer</button>
                 </div>
                 <input type="hidden" name="signature" id="sig-data-code">
                 @if($errors->has('signature'))
@@ -90,7 +107,7 @@
                 @endif
             </div>
             <button type="submit" class="btn btn-success" onclick="return prepSig('sig-canvas-code','sig-data-code')">
-                ✓ Valider mon émargement
+                Valider mon émargement
             </button>
         </div>
 
@@ -98,13 +115,16 @@
 </div>
 
 {{-- Séparateur OU ── --}}
-<div class="or-sep">C'est votre première séance ?</div>
+<div class="or-sep">Première présence</div>
 
 {{-- ══════════════════════════════════════════════════════════════
      BLOC 2 : Première inscription
 ══════════════════════════════════════════════════════════════ --}}
-<div class="card" id="bloc-inscription">
-    <div class="card-title">Première inscription</div>
+<div class="card flow-card" id="bloc-inscription">
+    <div class="card-heading">
+        <span class="card-kicker">Nouveau participant</span>
+        <h2 class="card-title">Créer votre inscription</h2>
+    </div>
 
     @if($errors->any() && !$errors->has('code') && !$errors->has('global'))
         <div class="alert alert-error">
@@ -140,11 +160,11 @@
         <div class="form-group">
             <label for="nom_naissance">
                 Nom de naissance
-                <span style="font-weight:400;color:var(--text-sec)">(si différent de votre nom actuel)</span>
             </label>
             <input type="text" name="nom_naissance" id="nom_naissance"
                 value="{{ old('nom_naissance') }}"
                 placeholder="Facultatif">
+            <div class="field-help">À renseigner uniquement s'il diffère du nom de famille.</div>
         </div>
 
         {{-- NIR ── --}}
@@ -160,18 +180,19 @@
                 placeholder="13 chiffres"
                 class="{{ $errors->has('nir') ? 'error' : '' }}"
                 oninput="this.value=this.value.replace(/\D/g,'')">
+            <div class="field-help">Format attendu : 13 chiffres, sans espaces.</div>
             @error('nir')<div class="field-error">{{ $message }}</div>@enderror
         </div>
 
-        <div class="toggle-row" style="margin-bottom:14px">
-            <label class="toggle-wrap">
+        <label class="toggle-row" for="nir-refuse">
+            <span class="toggle-wrap">
                 <input type="checkbox" name="nir_refuse" id="nir-refuse"
                     onchange="toggleNir(this)"
                     {{ old('nir_refuse') ? 'checked' : '' }}>
                 <span class="toggle-slider"></span>
-            </label>
+            </span>
             <span class="toggle-label">Je ne souhaite pas communiquer mon numéro de sécurité sociale</span>
-        </div>
+        </label>
 
         {{-- Signature ── --}}
         <div class="sep"></div>
@@ -182,7 +203,7 @@
                 <div class="sig-placeholder" id="sig-placeholder-insc">Signez ici avec votre doigt ou la souris</div>
             </div>
             <div class="sig-actions">
-                <button type="button" class="btn-clear" onclick="clearSig('sig-canvas-insc','sig-placeholder-insc')">✕ Effacer</button>
+                <button type="button" class="btn-clear" onclick="clearSig('sig-canvas-insc','sig-placeholder-insc')">Effacer</button>
             </div>
             <input type="hidden" name="signature" id="sig-data-insc">
             @if($errors->has('signature'))
@@ -197,10 +218,10 @@
             Il sera supprimé automatiquement après traitement.
         </div>
 
-        <div style="margin-top:16px">
+        <div class="submit-row">
             <button type="submit" class="btn btn-success"
                 onclick="return prepSig('sig-canvas-insc','sig-data-insc')">
-                ✓ Valider mon inscription et signer
+                Valider mon inscription et signer
             </button>
         </div>
 
@@ -318,7 +339,7 @@ document.getElementById('code-field')?.addEventListener('input', function () {
     if (val.length !== 3) {
         hint.textContent = '';
         hint.className   = 'code-hint';
-        document.getElementById('zone-signature-code').style.display = 'none';
+        document.getElementById('zone-signature-code').hidden = true;
         return;
     }
 
@@ -339,12 +360,12 @@ document.getElementById('code-field')?.addEventListener('input', function () {
             if (json.valide) {
                 hint.textContent = '✓ Bonjour ' + json.nom;
                 hint.className   = 'code-hint valid';
-                document.getElementById('zone-signature-code').style.display = 'block';
+                document.getElementById('zone-signature-code').hidden = false;
                 initPad('sig-canvas-code', 'sig-placeholder-code');
             } else {
                 hint.textContent = '✗ Code non reconnu';
                 hint.className   = 'code-hint invalid';
-                document.getElementById('zone-signature-code').style.display = 'none';
+                document.getElementById('zone-signature-code').hidden = true;
             }
         } catch (e) {
             hint.textContent = '';
@@ -367,7 +388,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Si erreurs de validation sur le formulaire code, ré-ouvrir la zone
     @if(old('code') && $errors->has('signature'))
-        document.getElementById('zone-signature-code').style.display = 'block';
+        document.getElementById('zone-signature-code').hidden = false;
         initPad('sig-canvas-code', 'sig-placeholder-code');
     @endif
 

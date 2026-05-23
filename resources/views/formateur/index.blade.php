@@ -47,31 +47,34 @@
 </head>
 <body>
 
-<header class="header">
-    <span class="header-logo">PassForm</span>
-    <span style="color:var(--border)">|</span>
-    <span style="font-size:14px; color:var(--text-sec)">{{ $session->intitule }}</span>
+<header class="header public-header formateur-header">
+    <div class="header-brand" aria-label="PassForm">
+        <img src="{{ asset('images/brcode-logo.jpg') }}" alt="" class="header-logo-img">
+        <span class="header-logo">PassForm</span>
+    </div>
+    <span class="header-sep">|</span>
+    <span class="header-info">{{ $session->intitule }}</span>
     <span class="header-role">Espace formateur</span>
 </header>
 
-<div class="container">
+<main class="container public-shell formateur-shell">
 
     @if(session('success_dj'))
-        <div class="alert-success" style="margin-bottom:16px">
-            ✓ Demi-journée certifiée avec succès.
+        <div class="alert alert-success">
+            Demi-journée certifiée avec succès.
         </div>
     @endif
 
-    <div class="card formateur-summary" style="margin-bottom:20px; padding:14px 20px">
-        <div style="font-size:13px; color:var(--text-sec); margin-bottom:2px">Session</div>
-        <div style="font-weight:600; font-size:16px">{{ $session->intitule }}</div>
+    <section class="card formateur-summary" aria-label="Session">
+        <span class="session-card__label">Session</span>
+        <strong>{{ $session->intitule }}</strong>
         @if($session->lieu)
-            <div style="font-size:13px; color:var(--text-sec)">{{ $session->lieu }}</div>
+            <span class="session-card__place">{{ $session->lieu }}</span>
         @endif
-    </div>
+    </section>
 
     @forelse($demiJournees as $dj)
-        <div class="card">
+        <article class="card dj-card">
             <div class="dj-header">
                 <div>
                     <div class="dj-title">
@@ -85,11 +88,11 @@
                 </div>
                 <div>
                     @if($dj->signature_formateur)
-                        <span class="badge badge-done">✓ Certifiée</span>
+                        <span class="badge badge-done">Certifiée</span>
                     @elseif($dj->statut_emargement === 'ouvert')
-                        <span class="badge badge-open">● En cours</span>
+                        <span class="badge badge-open">En cours</span>
                     @else
-                        <span class="badge badge-closed">○ {{ ucfirst($dj->statut_emargement) }}</span>
+                        <span class="badge badge-closed">{{ ucfirst($dj->statut_emargement) }}</span>
                     @endif
                 </div>
             </div>
@@ -101,9 +104,9 @@
                 $pct     = $total > 0 ? round($signes / $total * 100) : 0;
             @endphp
             <div class="progress-row">
-                <span style="font-size:12px; color:var(--text-sec)">Participants signés :</span>
+                <span class="progress-caption">Participants signés</span>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width:{{ $pct }}%"></div>
+                    <div class="progress-fill" style="--progress: {{ $pct }}%"></div>
                 </div>
                 <span class="progress-label">{{ $signes }}/{{ $total }}</span>
             </div>
@@ -112,10 +115,10 @@
 
             {{-- Signature formateur déjà faite --}}
             @if($dj->signature_formateur)
-                <div style="font-size:13px; font-weight:500; margin-bottom:8px; color:var(--green)">
-                    ✓ Vous avez certifié cette demi-journée
+                <div class="certification-done">
+                    Vous avez certifié cette demi-journée
                 </div>
-                <div style="font-size:12px; color:var(--text-sec); margin-bottom:10px">
+                <div class="certification-date">
                     Le {{ $dj->formateur_signe_at->format('d/m/Y à H\hi') }}
                 </div>
                 <img src="{{ $dj->signature_formateur }}" class="sig-done-img" alt="Signature formateur">
@@ -127,7 +130,7 @@
                     id="form-dj-{{ $dj->id }}">
                     @csrf
 
-                    <div style="font-size:13px; font-weight:500; margin-bottom:8px">
+                    <div class="signature-title">
                         Signez pour certifier cette demi-journée
                     </div>
                     <div class="sig-wrap">
@@ -138,27 +141,27 @@
                     </div>
                     <div class="sig-actions">
                         <button type="button" class="btn-clear"
-                            onclick="clearSig({{ $dj->id }})">✕ Effacer</button>
+                            onclick="clearSig({{ $dj->id }})">Effacer</button>
                     </div>
                     <input type="hidden" name="signature" id="sig-data-{{ $dj->id }}">
 
                     <button type="submit" class="btn btn-success"
                         onclick="return prepSig({{ $dj->id }})">
-                        ✓ Certifier cette demi-journée
+                        Certifier cette demi-journée
                     </button>
                 </form>
             @endif
-        </div>
+        </article>
     @empty
-        <div class="card" style="text-align:center; color:var(--text-sec)">
+        <div class="card empty-state">
             Aucune demi-journée configurée pour cette session.
         </div>
     @endforelse
 
-    <div style="text-align:center; font-size:11px; color:#bbb; margin-top:20px">
+    <div class="footer">
         Lien formateur privé · Ne pas partager · Horodatage et IP journalisés
     </div>
-</div>
+</main>
 
 <script>
 const pads = {};

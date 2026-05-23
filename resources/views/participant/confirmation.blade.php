@@ -6,9 +6,10 @@
 
     {{-- Icône succès --}}
     <div class="confirmation-card__icon" aria-hidden="true">✓</div>
+    <div class="confirmation-card__eyebrow">Signature enregistrée</div>
 
     <h1>
-        Émargement enregistré !
+        Émargement enregistré
     </h1>
     <p>
         Votre présence a bien été enregistrée pour :<br>
@@ -55,7 +56,7 @@
 
     {{-- NIR --}}
     @if($participant->nir_refuse)
-        <div class="alert alert-info" style="text-align:left; margin-bottom:16px">
+        <div class="alert alert-info text-left mb-16">
             Vous avez choisi de ne pas communiquer votre NIR.
             Si vous souhaitez le compléter ultérieurement, contactez votre formateur.
         </div>
@@ -68,7 +69,7 @@
 
 </div>
 
-<div class="rgpd-notice" style="margin-top:0">
+<div class="rgpd-notice rgpd-notice--compact">
     Signature enregistrée avec horodatage et adresse IP journalisée — Conforme RGPD
 </div>
 

@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Blue,
                 'gray'    => Color::Slate,
             ])
-            ->brandName('BR Code')
+            ->brandName('PassForm')
             ->brandLogo(asset('images/brcode-logo.jpg'))
             ->brandLogoHeight('3.25rem')
             ->favicon(null)
@@ -64,7 +64,7 @@ class AdminPanelProvider extends PanelProvider
                         --pf-navy-tile: rgba(255, 255, 255, .08);
                         --pf-navy-tile-border: rgba(255, 255, 255, .16);
                         --pf-dashboard-gutter: clamp(1rem, 2vw, 2.75rem);
-                        --pf-dashboard-width: calc(100vw - (var(--pf-dashboard-gutter) * 2));
+                        --pf-dashboard-width: min(1180px, calc(100vw - (var(--pf-dashboard-gutter) * 2)));
                     }
 
                     .fi-body {
@@ -347,11 +347,6 @@ class AdminPanelProvider extends PanelProvider
                         backdrop-filter: blur(18px);
                     }
 
-                    .fi-sidebar,
-                    .fi-topbar {
-                        display: none !important;
-                    }
-
                     .fi-topbar > nav {
                         border-bottom: 1px solid var(--pf-line);
                         background: rgba(255, 255, 255, .78);
@@ -449,7 +444,7 @@ class AdminPanelProvider extends PanelProvider
                     }
 
                     .fi-main-ctn {
-                        width: 100vw !important;
+                        width: 100% !important;
                         max-width: none !important;
                         margin: 0 !important;
                         background: transparent;

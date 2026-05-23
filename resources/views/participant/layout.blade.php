@@ -330,8 +330,11 @@
 </head>
 <body>
 
-<header class="header">
-    <span class="header-logo">PassForm</span>
+<header class="header public-header">
+    <div class="header-brand" aria-label="PassForm">
+        <img src="{{ asset('images/brcode-logo.jpg') }}" alt="" class="header-logo-img">
+        <span class="header-logo">PassForm</span>
+    </div>
     <span class="header-sep">|</span>
     <span class="header-info">{{ $session->intitule }}</span>
     @if(isset($djEnCours) && $djEnCours)
@@ -342,13 +345,13 @@
     @endif
 </header>
 
-<div class="container">
+<main class="container public-shell">
     @yield('content')
 
     <div class="footer">
         Signature électronique sécurisée · Données chiffrées · Conforme RGPD
     </div>
-</div>
+</main>
 
 @stack('scripts')
 </body>
