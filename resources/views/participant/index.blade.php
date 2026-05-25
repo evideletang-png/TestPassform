@@ -98,23 +98,19 @@
         @csrf
 
         <div class="form-group">
-            <label for="code-field">Code à 3 chiffres</label>
-            <div class="digit-input-wrap" aria-describedby="code-hint">
-                <input
-                    type="text"
-                    name="code"
-                    id="code-field"
-                    minlength="3"
-                    maxlength="3"
-                    placeholder="•••"
-                    value="{{ old('code') }}"
-                    autocomplete="off"
-                    inputmode="numeric"
-                    pattern="[0-9]{3}"
-                    class="digit-input {{ $errors->has('code') ? 'error' : '' }}"
-                    aria-label="Code à 3 chiffres"
-                >
+            <label>Entrez votre code à 3 chiffres</label>
+            <div class="otp-wrap" role="group" aria-label="Code à 3 chiffres">
+                <input type="text" inputmode="numeric" maxlength="1"
+                    class="otp-box {{ $errors->has('code') ? 'error' : '' }}"
+                    data-idx="0" autocomplete="off" aria-label="1er chiffre">
+                <input type="text" inputmode="numeric" maxlength="1"
+                    class="otp-box {{ $errors->has('code') ? 'error' : '' }}"
+                    data-idx="1" autocomplete="off" aria-label="2e chiffre">
+                <input type="text" inputmode="numeric" maxlength="1"
+                    class="otp-box {{ $errors->has('code') ? 'error' : '' }}"
+                    data-idx="2" autocomplete="off" aria-label="3e chiffre">
             </div>
+            <input type="hidden" name="code" id="code-field" value="{{ old('code') }}">
             <div class="code-hint" id="code-hint" role="status" aria-live="polite"></div>
         </div>
 
@@ -413,52 +409,106 @@ function toggleNir(checkbox) {
     if (req) req.style.visibility = checkbox.checked ? 'hidden' : '';
 }
 
-// ── Vérification AJAX du code ─────────────────────────────────────────────────
+// ── OTP — cases code ──────────────────────────────────────────────────────────
 let codeVerifTimeout;
 
-document.getElementById('code-field')?.addEventListener('input', function () {
-    clearTimeout(codeVerifTimeout);
-    const hint = document.getElementById('code-hint');
-    const val  = this.value;
+function initOTP() {
+    const boxes  = Array.from(document.querySelectorAll('.otp-box'));
+    const hidden = document.getElementById('code-field');
+    if (!boxes.length || !hidden) return;
 
-    if (val.length !== 3) {
-        hint.textContent = '';
-        hint.className   = 'code-hint';
-        document.getElementById('zone-signature-code').hidden = true;
-        return;
+    // Pré-remplir si old('code')
+    const oldVal = hidden.value;
+    if (oldVal) {
+        boxes.forEach((b, i) => { b.value = oldVal[i] || ''; if (b.value) b.classList.add('filled'); });
     }
 
-    hint.innerHTML = '<span class="code-hint__spinner"></span> Vérification…';
-    hint.className = 'code-hint';
+    function getCode() { return boxes.map(b => b.value).join(''); }
 
-    codeVerifTimeout = setTimeout(async () => {
-        try {
-            const res  = await fetch("{{ route('participant.verifier_code', $session->token_participant) }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                },
-                body: JSON.stringify({ code: val }),
-            });
-            const json = await res.json();
-            if (json.valide) {
-                hint.innerHTML = '✓ Bonjour <strong>' + json.nom + '</strong>';
-                hint.className = 'code-hint valid';
-                const zone = document.getElementById('zone-signature-code');
-                zone.hidden = false;
-                zone.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                initPad('sig-canvas-code', 'sig-placeholder-code');
-            } else {
-                hint.textContent = '✗ Code non reconnu — vérifiez votre code ou passez en "Première fois"';
-                hint.className   = 'code-hint invalid';
-                document.getElementById('zone-signature-code').hidden = true;
-            }
-        } catch {
+    function triggerVerif() {
+        const code = getCode();
+        hidden.value = code;
+        const hint = document.getElementById('code-hint');
+        clearTimeout(codeVerifTimeout);
+
+        if (code.length !== 3) {
             hint.textContent = '';
+            hint.className   = 'code-hint';
+            document.getElementById('zone-signature-code').hidden = true;
+            return;
         }
-    }, 400);
-});
+
+        hint.innerHTML = '<span class="code-hint__spinner"></span> Vérification…';
+        hint.className = 'code-hint';
+
+        codeVerifTimeout = setTimeout(async () => {
+            try {
+                const res  = await fetch("{{ route('participant.verifier_code', $session->token_participant) }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    },
+                    body: JSON.stringify({ code }),
+                });
+                const json = await res.json();
+                if (json.valide) {
+                    hint.innerHTML = '✓ Bonjour <strong>' + json.nom + '</strong>';
+                    hint.className = 'code-hint valid';
+                    boxes.forEach(b => b.classList.remove('error'));
+                    const zone = document.getElementById('zone-signature-code');
+                    zone.hidden = false;
+                    zone.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    initPad('sig-canvas-code', 'sig-placeholder-code');
+                } else {
+                    hint.textContent = '✗ Code inconnu — passez en "Première fois" si c\'est votre 1ère séance';
+                    hint.className   = 'code-hint invalid';
+                    boxes.forEach(b => b.classList.add('error'));
+                    document.getElementById('zone-signature-code').hidden = true;
+                }
+            } catch { hint.textContent = ''; }
+        }, 350);
+    }
+
+    boxes.forEach((box, i) => {
+        box.addEventListener('input', function () {
+            const val = this.value.replace(/\D/g, '');
+            this.value = val.slice(-1);
+            this.classList.toggle('filled', !!this.value);
+            this.classList.remove('error');
+            if (this.value && i < boxes.length - 1) boxes[i + 1].focus();
+            triggerVerif();
+        });
+
+        box.addEventListener('keydown', function (e) {
+            if (e.key === 'Backspace') {
+                if (!this.value && i > 0) {
+                    boxes[i - 1].value = '';
+                    boxes[i - 1].classList.remove('filled', 'error');
+                    boxes[i - 1].focus();
+                } else {
+                    this.classList.remove('filled', 'error');
+                }
+                triggerVerif();
+            }
+        });
+
+        box.addEventListener('paste', function (e) {
+            const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+            boxes.forEach((b, j) => {
+                b.value = paste[j] || '';
+                b.classList.toggle('filled', !!b.value);
+            });
+            boxes[Math.min(paste.length, boxes.length) - 1]?.focus();
+            triggerVerif();
+            e.preventDefault();
+        });
+
+        box.addEventListener('focus', function () {
+            this.select();
+        });
+    });
+}
 
 // ── Soumission formulaire code ───────────────────────────────────────────────
 document.getElementById('form-code')?.addEventListener('submit', function (e) {
@@ -499,9 +549,12 @@ window.addEventListener('DOMContentLoaded', () => {
         if (errEl) errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     @endif
 
-    // Focus automatique sur le champ code
+    // Init OTP
+    initOTP();
+
+    // Focus automatique sur la première case
     @if(!$errors->any() || $errors->has('code'))
-        document.getElementById('code-field')?.focus();
+        document.querySelector('.otp-box')?.focus();
     @endif
 });
 </script>
