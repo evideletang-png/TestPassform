@@ -7,30 +7,24 @@
 
 <div class="card confirmation-card">
 
-    {{-- Icône succès --}}
-    <div class="confirmation-card__icon" aria-hidden="true">✓</div>
-    <div class="confirmation-card__eyebrow">Signature enregistrée</div>
+    <div class="confirmation-card__icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
 
-    <h1>
-        Émargement enregistré
-    </h1>
+    <div class="confirmation-card__eyebrow">Signature enregistrée</div>
+    <h1>Émargement confirmé</h1>
     <p>
         Votre présence a bien été enregistrée pour :<br>
         <strong>{{ $dj->libelle }}</strong>
     </p>
 
-    {{-- Code à 3 chiffres --}}
+    {{-- Code d'identification --}}
     <div class="code-panel">
-        <div class="code-panel__label">
-            Votre code d'identification
-        </div>
-        <div class="code-panel__value">
-            {{ $participant->code_identification }}
-        </div>
+        <div class="code-panel__label">Votre code pour les prochaines séances</div>
+        <div class="code-panel__value">{{ $participant->code_identification }}</div>
         <div class="code-panel__hint">
-            Notez ce code. Il vous sera demandé pour signer<br>
-            les prochaines demi-journées de cette formation.<br>
-            En cas d'oubli, le formateur peut vous le retrouver.
+            Notez ce code — il vous sera demandé pour signer les prochaines demi-journées.<br>
+            En cas d'oubli, votre formateur peut vous le retrouver.
         </div>
     </div>
 
@@ -46,10 +40,7 @@
         </div>
         <div class="summary-row">
             <span>Demi-journée</span>
-            <span>
-                {{ $dj->creneau === 'matin' ? 'Matin' : 'Après-midi' }}
-                · {{ $dj->date->format('d/m/Y') }}
-            </span>
+            <span>{{ $dj->creneau === 'matin' ? 'Matin' : 'Après-midi' }} · {{ $dj->date->format('d/m/Y') }}</span>
         </div>
         <div class="summary-row">
             <span>Horodatage</span>
@@ -57,7 +48,6 @@
         </div>
     </div>
 
-    {{-- NIR --}}
     @if($participant->nir_refuse)
         <div class="alert alert-info text-left mb-16">
             Vous avez choisi de ne pas communiquer votre NIR.
@@ -65,14 +55,15 @@
         </div>
     @endif
 
-    {{-- Bouton imprimer / capture d'écran --}}
     <button onclick="window.print()" class="print-button">
-        Imprimer / sauvegarder ce récapitulatif
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Imprimer / sauvegarder
     </button>
 
 </div>
 
 <div class="rgpd-notice rgpd-notice--compact">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
     Signature enregistrée avec horodatage et adresse IP journalisée — Conforme RGPD
 </div>
 
@@ -88,9 +79,9 @@
 @push('scripts')
 <style>
 @media print {
-    .header, .footer, button { display: none !important; }
+    .header, .footer, .print-button { display: none !important; }
     body { background: #fff; }
-    .card { box-shadow: none; border: 1px solid #ccc; }
+    .card { box-shadow: none !important; border: 1px solid #ccc !important; }
 }
 </style>
 @endpush
