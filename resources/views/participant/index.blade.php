@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="participant-workspace">
-<div class="workspace-main">
+<div class="workspace-main dark-shell">
 
 {{-- ── Infos session ── --}}
 <section class="session-info session-card" aria-label="Session">
@@ -316,7 +316,7 @@ function initPad(canvasId, placeholderId) {
     canvas.width  = (rect.width  || canvas.offsetWidth)  * dpr;
     canvas.height = (parseInt(canvas.getAttribute('height')) || 160) * dpr;
     ctx.scale(dpr, dpr);
-    ctx.strokeStyle = '#1A1916';
+    ctx.strokeStyle = canvas.closest('.dark-shell') ? 'rgba(255,255,255,.88)' : '#172033';
     ctx.lineWidth   = 2.5;
     ctx.lineCap     = 'round';
     ctx.lineJoin    = 'round';

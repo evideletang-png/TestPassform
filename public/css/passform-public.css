@@ -64,10 +64,7 @@ body {
     font-size: 15px;
     line-height: 1.55;
     color: var(--ink);
-    background:
-        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(99,102,241,.10) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 90% 110%, rgba(16,185,129,.07) 0%, transparent 55%),
-        #F5F4FF;
+    background: #E8EDF5;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
 }
@@ -1195,6 +1192,317 @@ input[type=text]:disabled {
 
 /* ── Zone de signature (form code) ─────────────────────────── */
 .signature-zone { }
+
+/* ══════════════════════════════════════════════════════════════
+   DARK SHELL — Carte navy principale (style admin)
+   ══════════════════════════════════════════════════════════════ */
+
+.dark-shell {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    background: linear-gradient(145deg, #1E2F5C 0%, #152248 100%);
+    border-radius: var(--r-xl);
+    padding: clamp(24px, 4vw, 36px);
+    box-shadow:
+        0 32px 80px rgba(14, 20, 50, .30),
+        0 4px 16px rgba(14, 20, 50, .14),
+        inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+/* Halos décoratifs */
+.dark-shell::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(245,183,49,.13) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.dark-shell::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -60px;
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(99,102,241,.10) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ── dark-shell : session card ──────────────────────────────── */
+.dark-shell .session-card,
+.dark-shell .card.empty-state {
+    background: rgba(255,255,255,.07) !important;
+    border-color: rgba(255,255,255,.1) !important;
+    box-shadow: none !important;
+}
+
+.dark-shell .session-card__label,
+.dark-shell .card-kicker { color: #F5B731 !important; }
+
+.dark-shell .session-card strong { color: #fff !important; }
+
+.dark-shell .session-card__place,
+.dark-shell .session-card__slot-label,
+.dark-shell .dj-badge { color: rgba(255,255,255,.65) !important; }
+
+.dark-shell .session-card__slot {
+    background: rgba(34,197,94,.12) !important;
+    border-color: rgba(34,197,94,.22) !important;
+    color: #4ADE80 !important;
+}
+
+.dark-shell .session-card__slot--waiting {
+    background: rgba(245,183,49,.12) !important;
+    border-color: rgba(245,183,49,.22) !important;
+    color: #FCD34D !important;
+}
+
+/* ── dark-shell : onglets ────────────────────────────────────── */
+.dark-shell .tabs {
+    background: rgba(255,255,255,.08) !important;
+    border-color: rgba(255,255,255,.1) !important;
+}
+
+.dark-shell .tab { color: rgba(255,255,255,.55); }
+.dark-shell .tab:hover:not(.tab--active) {
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.85);
+}
+.dark-shell .tab--active {
+    background: rgba(255,255,255,.15) !important;
+    color: #fff !important;
+    box-shadow: 0 1px 6px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.14);
+}
+
+/* ── dark-shell : panneaux / flow-card ──────────────────────── */
+.dark-shell .tab-panel,
+.dark-shell .flow-card {
+    background: rgba(255,255,255,.06) !important;
+    border-color: rgba(255,255,255,.1) !important;
+    box-shadow: none !important;
+}
+
+/* ── dark-shell : typographie ───────────────────────────────── */
+.dark-shell .card-title { color: #fff !important; }
+.dark-shell label { color: rgba(255,255,255,.75) !important; }
+.dark-shell .field-help { color: rgba(255,255,255,.4) !important; }
+.dark-shell .field-optional { color: rgba(255,255,255,.32) !important; }
+.dark-shell .field-error { color: #FCA5A5 !important; }
+
+/* ── dark-shell : inputs ─────────────────────────────────────── */
+.dark-shell input[type=text],
+.dark-shell input[type=number] {
+    background: rgba(255,255,255,.09) !important;
+    border-color: rgba(255,255,255,.16) !important;
+    color: #fff !important;
+}
+.dark-shell input[type=text]::placeholder,
+.dark-shell input[type=number]::placeholder { color: rgba(255,255,255,.28) !important; }
+.dark-shell input[type=text]:focus,
+.dark-shell input[type=number]:focus {
+    background: rgba(255,255,255,.13) !important;
+    border-color: #F5B731 !important;
+    box-shadow: 0 0 0 3px rgba(245,183,49,.22) !important;
+}
+.dark-shell input[type=text].error,
+.dark-shell input[type=number].error {
+    background: rgba(239,68,68,.1) !important;
+    border-color: rgba(239,68,68,.5) !important;
+}
+.dark-shell input:disabled { opacity: .35; }
+
+/* ── dark-shell : OTP ────────────────────────────────────────── */
+.dark-shell .otp-box {
+    background: rgba(255,255,255,.09) !important;
+    border-color: rgba(255,255,255,.18) !important;
+    color: #F5B731 !important;
+}
+.dark-shell .otp-box:focus {
+    background: rgba(245,183,49,.12) !important;
+    border-color: #F5B731 !important;
+    box-shadow: 0 0 0 4px rgba(245,183,49,.22) !important;
+}
+.dark-shell .otp-box.filled {
+    background: rgba(245,183,49,.14) !important;
+    border-color: rgba(245,183,49,.45) !important;
+}
+.dark-shell .otp-box.error {
+    background: rgba(239,68,68,.1) !important;
+    border-color: rgba(239,68,68,.4) !important;
+    color: #FCA5A5 !important;
+}
+
+.dark-shell .code-hint { color: rgba(255,255,255,.45) !important; }
+.dark-shell .code-hint.valid { color: #4ADE80 !important; }
+.dark-shell .code-hint.invalid { color: #FCA5A5 !important; }
+
+/* ── dark-shell : pad de signature ──────────────────────────── */
+.dark-shell .sig-wrap {
+    background: rgba(255,255,255,.05) !important;
+    border-color: rgba(255,255,255,.18) !important;
+    background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px) !important;
+}
+.dark-shell .sig-wrap:hover { border-color: rgba(245,183,49,.4) !important; }
+.dark-shell .sig-wrap--error {
+    border-color: rgba(239,68,68,.45) !important;
+    background: rgba(239,68,68,.08) !important;
+}
+.dark-shell .sig-placeholder { color: rgba(255,255,255,.3) !important; }
+.dark-shell .sig-error { color: #FCA5A5; }
+.dark-shell .sig-actions {
+    background: rgba(255,255,255,.06) !important;
+    border-top-color: rgba(255,255,255,.1) !important;
+}
+.dark-shell .btn-clear { color: rgba(255,255,255,.42) !important; }
+.dark-shell .btn-clear:hover { color: #FCA5A5 !important; background: rgba(239,68,68,.12) !important; }
+
+/* ── dark-shell : boutons ────────────────────────────────────── */
+.dark-shell .btn-success {
+    background: linear-gradient(135deg, #F5C842, #E09918) !important;
+    color: #1C2B4A !important;
+    box-shadow: 0 4px 18px rgba(245,183,49,.38) !important;
+}
+.dark-shell .btn-success:hover:not(:disabled) {
+    box-shadow: 0 8px 28px rgba(245,183,49,.52) !important;
+}
+.dark-shell .btn-outline {
+    background: rgba(255,255,255,.1) !important;
+    border-color: rgba(255,255,255,.2) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+.dark-shell .btn-outline:hover:not(:disabled) {
+    background: rgba(255,255,255,.16) !important;
+    border-color: rgba(255,255,255,.3) !important;
+}
+
+/* ── dark-shell : séparateur ─────────────────────────────────── */
+.dark-shell .sep { background: rgba(255,255,255,.1) !important; }
+
+/* ── dark-shell : alertes ────────────────────────────────────── */
+.dark-shell .alert-error {
+    background: rgba(239,68,68,.12) !important;
+    border-color: rgba(239,68,68,.25) !important;
+    color: #FCA5A5 !important;
+}
+.dark-shell .alert-success {
+    background: rgba(34,197,94,.12) !important;
+    border-color: rgba(34,197,94,.25) !important;
+    color: #4ADE80 !important;
+}
+.dark-shell .alert-info {
+    background: rgba(245,183,49,.1) !important;
+    border-color: rgba(245,183,49,.22) !important;
+    color: #FCD34D !important;
+}
+
+/* ── dark-shell : toggle NIR ─────────────────────────────────── */
+.dark-shell .toggle-row {
+    background: rgba(255,255,255,.06) !important;
+    border-color: rgba(255,255,255,.12) !important;
+}
+.dark-shell .toggle-row:hover {
+    background: rgba(255,255,255,.1) !important;
+    border-color: rgba(245,183,49,.3) !important;
+}
+.dark-shell .toggle-label { color: rgba(255,255,255,.6) !important; }
+.dark-shell .toggle-slider { background: rgba(255,255,255,.2) !important; }
+.dark-shell .toggle-wrap input:checked + .toggle-slider { background: #F5B731 !important; }
+
+/* ── dark-shell : RGPD ───────────────────────────────────────── */
+.dark-shell .rgpd-notice {
+    background: rgba(34,197,94,.1) !important;
+    border-color: rgba(34,197,94,.2) !important;
+    color: #86EFAC !important;
+}
+
+/* ── dark-shell : lien retard ────────────────────────────────── */
+.dark-shell .retard-link { color: rgba(255,255,255,.45) !important; border-color: transparent !important; }
+.dark-shell .retard-link:hover {
+    background: rgba(255,255,255,.08) !important;
+    border-color: rgba(255,255,255,.14) !important;
+    color: #fff !important;
+}
+
+/* ── dark-shell : empty state ────────────────────────────────── */
+.dark-shell .empty-state__icon {
+    background: rgba(245,183,49,.15) !important;
+    color: #F5B731 !important;
+    box-shadow: none !important;
+}
+.dark-shell .empty-state__title { color: #fff !important; }
+.dark-shell .empty-state__copy { color: rgba(255,255,255,.52) !important; }
+
+/* ── dark-shell : formateur ──────────────────────────────────── */
+.dark-shell .formateur-summary {
+    background: rgba(255,255,255,.07) !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    border-left: 3px solid #F5B731 !important;
+    border-radius: var(--r) !important;
+    padding: 14px 14px 14px 18px !important;
+    box-shadow: none !important;
+}
+.dark-shell .dj-card {
+    background: rgba(255,255,255,.07) !important;
+    border-color: rgba(255,255,255,.1) !important;
+    box-shadow: none !important;
+}
+.dark-shell .dj-title { color: #fff !important; }
+.dark-shell .dj-sub { color: rgba(255,255,255,.48) !important; }
+.dark-shell .badge-open,
+.dark-shell .badge-done { background: rgba(34,197,94,.15) !important; color: #4ADE80 !important; }
+.dark-shell .badge-closed { background: rgba(255,255,255,.1) !important; color: rgba(255,255,255,.45) !important; }
+.dark-shell .progress-caption { color: rgba(255,255,255,.45); }
+.dark-shell .progress-bar { background: rgba(255,255,255,.1) !important; }
+.dark-shell .progress-label { color: rgba(255,255,255,.7) !important; }
+.dark-shell .signature-title { color: rgba(255,255,255,.8); }
+.dark-shell .certification-done { color: #4ADE80; }
+.dark-shell .certification-date { color: rgba(255,255,255,.42); }
+.dark-shell .sig-done-img { background: rgba(255,255,255,.08) !important; border-color: rgba(255,255,255,.14) !important; }
+
+/* ── dark-shell : footer ─────────────────────────────────────── */
+.dark-shell .footer { color: rgba(255,255,255,.22) !important; }
+
+/* ── dark-shell : confirmation ───────────────────────────────── */
+.dark-shell .card.confirmation-card {
+    background: rgba(255,255,255,.07) !important;
+    border-color: rgba(255,255,255,.1) !important;
+    box-shadow: none !important;
+}
+.dark-shell .confirmation-card h1 { color: #fff !important; }
+.dark-shell .confirmation-card p { color: rgba(255,255,255,.62) !important; }
+.dark-shell .confirmation-card p strong { color: #fff !important; }
+
+.dark-shell .code-panel {
+    background: rgba(245,183,49,.1) !important;
+    border-color: rgba(245,183,49,.28) !important;
+}
+.dark-shell .code-panel__label { color: #F5B731 !important; }
+.dark-shell .code-panel__value { color: #F5C842 !important; }
+.dark-shell .code-panel__hint { color: rgba(255,255,255,.5) !important; }
+
+.dark-shell .summary-list {
+    background: rgba(255,255,255,.06) !important;
+    border-color: rgba(255,255,255,.1) !important;
+}
+.dark-shell .summary-row { border-bottom-color: rgba(255,255,255,.08) !important; }
+.dark-shell .summary-row span:first-child { color: rgba(255,255,255,.45) !important; }
+.dark-shell .summary-row span:last-child { color: #fff !important; }
+
+.dark-shell .print-button {
+    background: rgba(255,255,255,.1) !important;
+    border-color: rgba(255,255,255,.18) !important;
+    color: rgba(255,255,255,.75) !important;
+}
+.dark-shell .print-button:hover {
+    background: rgba(255,255,255,.16) !important;
+    border-color: rgba(255,255,255,.3) !important;
+    color: #fff !important;
+    box-shadow: none;
+}
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {

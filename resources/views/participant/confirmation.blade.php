@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="participant-workspace confirmation-workspace">
-<div class="workspace-main">
+<div class="workspace-main dark-shell">
 
 <div class="card confirmation-card">
 

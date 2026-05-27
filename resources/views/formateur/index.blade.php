@@ -27,6 +27,7 @@
 </header>
 
 <main class="container public-shell formateur-shell">
+<div class="dark-shell">
 
     @if(session('success_dj'))
         <div class="alert alert-success" role="status">
@@ -139,6 +140,8 @@
     <div class="footer">
         Lien formateur privé · Ne pas partager · Horodatage et IP journalisés
     </div>
+
+</div>{{-- /.dark-shell --}}
 </main>
 
 <script>
@@ -153,7 +156,7 @@ function initPad(id) {
     canvas.width  = canvas.offsetWidth * dpr;
     canvas.height = (parseInt(canvas.getAttribute('height')) || 140) * dpr;
     ctx.scale(dpr, dpr);
-    ctx.strokeStyle = '#172033';
+    ctx.strokeStyle = canvas.closest('.dark-shell') ? 'rgba(255,255,255,.88)' : '#172033';
     ctx.lineWidth   = 2.5;
     ctx.lineCap     = 'round';
     ctx.lineJoin    = 'round';
